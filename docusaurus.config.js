@@ -2,7 +2,7 @@
 // Note: type annotations allow type checking and IDEs autocompletion
 
 // Main configuration
-const workshopName = 'mongodb-security-basics';
+const workshopName = 'security-basics-labs';
 const organizationName = "mongodb-developer";
 
 // Main page config
