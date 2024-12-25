@@ -1,0 +1,88 @@
+---
+sidebar_position: 2
+---
+
+
+# RUN : Authentication challenge 
+
+> Hint! Remember to add the `--projectId {project_id}`
+
+> Docs : atlas [dbusers](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-dbusers-create/)
+
+
+### 1. Let's create a SCRAM user: 'myUser' with User/Password authentication and assign it the 'readWriteAnyDatabase' role.
+
+```
+# CODE_BLOCK_7
+!atlas dbusers create ...
+```
+
+
+<details>
+    <summary> Answer </summary>
+    ```
+!atlas dbusers create --username myUser --password mySecurePassword --role readWriteAnyDatabase --projectId {project_id}
+```
+</details>
+
+### 2. Lets test our SCRAM user successful creation by performing the authentication process
+```
+# CODE_BLOCK_8
+!pip install pymongo dnspython  
+```
+```
+# CODE_BLOCK_9
+connection = !atlas clusters connectionStrings describe  MyNewCluster --projectId {project_id}
+
+username = 'myUser'
+password = 'mySecurePassword'
+
+new_connection = connection[1].replace('mongodb+srv://', f'mongodb+srv://{username}:{password}@')
+print(new_connection)
+
+from pymongo import MongoClient
+client = MongoClient(new_connection)
+
+client.list_database_names()
+```
+
+### 3. Let's create  X509 user: 'myX509User' with User/Password authentication and assign it the 'readWriteAnyDatabase' role.
+
+```
+# CODE_BLOCK_10
+!atlas dbusers create ...
+
+!atlas dbusers certs create ...  > /tmp/cert.pem
+```
+
+<details>
+    <summary> Answer </summary>
+    ```
+    # Generate an X509 certificate for a new user
+    !atlas dbusers create --username myX509User --x509Type MANAGED --role readAnyDatabase --projectId {project_id}
+    # Generate and save the certificate
+    !atlas dbusers certs create --username myX509User --monthsUntilExpiration 1 --projectId {project_id} > /tmp/cert.pem
+    ```
+</details>
+
+### 4. Let's test our X509 User
+
+```
+# CODE_BLOCK_11
+username='myX509User'
+connection = !atlas clusters connectionStrings describe MyNewCluster --projectId {project_id}
+new_connection = connection[1].replace('.net', '.net?authSource=%24external&authMechanism=MONGODB-X509')
+print(new_connection)
+
+# Connect using the certificate
+from pymongo import MongoClient
+client = MongoClient(new_connection,
+                     tlsCertificateKeyFile='/tmp/cert.pem')
+
+# Access the database
+client.list_database_names()
+
+```
+## Next Steps
+
+Start the chapter on [RBAC](./rbac) for Role Based Access user management.

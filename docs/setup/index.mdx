@@ -1,0 +1,101 @@
+---
+sidebar_position: 2
+---
+
+# Initial Setup and access for Atlas CLI
+
+**Run this section in your notebook**
+
+> You can clone our template or use it in one of the online environments: https://github.com/mongodb-developer/security-lab-notebooks/blob/main/template_notebook.ipynb
+>
+> **Important! Each code block is marked with a number associated to the tutorial here.**
+
+This section will cover the required notebook operations that must be fulfilled to run the Challenges.
+
+### 1. Install atlas CLI on the notebook environment.
+```
+# CODE_BLOCK_1
+# prompt: Install Atlas CLI using this link https://fastdl.mongodb.org/mongocli/mongodb-atlas-cli_1.31.0_linux_x86_64.deb
+
+!wget https://fastdl.mongodb.org/mongocli/mongodb-atlas-cli_1.31.0_linux_x86_64.deb
+!dpkg -i mongodb-atlas-cli_1.31.0_linux_x86_64.deb
+
+## Might require:
+## !sudo dpkg -i mongodb-atlas-cli_1.31.0_linux_x86_64.deb
+```
+
+### 2. Authenticate the CLI against your Atlas organization.**
+```
+# CODE_BLOCK_2
+# Authenticate with Atlas CLI
+!atlas auth login
+```
+
+**Important!** This task will need to be canceled after you click the connect link https://account.mongodb.com/account/connect and input the 8 digit code prompted. 
+
+Once logged in press the "stop" button on that notebook cell.
+
+
+<details>
+<summary> Example </summary>
+
+Run the cell and get the verification code as well as the authentication link and open it in a new tab:
+
+
+<img src="../img/Init_CLI.png" />
+
+Proceed to login into https://account.mongodb.com/account/connect  and provide the code in the opened authentication tab:
+
+<img src="../img/InputKey.png" />
+
+Confirm the CLI access and go back to the notebook:
+
+<img src="../img/AuthCLI.png" />
+
+You should see an output in the notebook cell similar to:
+
+```
+To verify your account, copy your one-time verification code:
+F7JK-PTRT
+
+Paste the code in the browser when prompted to activate your Atlas CLI. Your code will expire after 10 minutes.
+
+To continue, go to https://account.mongodb.com/account/connect
+/usr/bin/xdg-open: 882: www-browser: not found
+/usr/bin/xdg-open: 882: links2: not found
+/usr/bin/xdg-open: 882: elinks: not found
+/usr/bin/xdg-open: 882: links: not found
+/usr/bin/xdg-open: 882: lynx: not found
+/usr/bin/xdg-open: 882: w3m: not found
+xdg-open: no method available for opening 'https://account.mongodb.com/account/connect'
+There was an issue opening your browser
+Successfully logged in as <youruser>@mongodb.com.
+Select one default organization and one default project.
+...
+```
+
+Take a note of the relevant Organization ID for next steps and "STOP" the cell.
+<img src="../img/SuccessPhase.png" />
+</details>
+
+### 3. Create a new project called "MySecureProj"
+```
+# CODE_BLOCK_3
+import getpass
+
+org_id = getpass.getpass('Enter your org ID: ')
+!atlas projects create MySecureProj --orgId {org_id}
+```
+
+> **Hint!** :  Some notebook environments will need the getpass installation command `!pip install getpass`
+
+### 4. Create your challenge cluster
+```
+# CODE_BLOCK_4
+project_id = getpass.getpass('Enter your project ID: ')
+!atlas clusters create MyNewCluster --provider AWS --region US_EAST_1 --tier M0 --projectId {project_id}
+```
+
+## Next Steps
+
+Progress to [Network Setup](./atlas) for authorising access to your Atlas deployment.

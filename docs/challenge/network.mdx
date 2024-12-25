@@ -1,0 +1,44 @@
+---
+sidebar_position: 1
+---
+
+
+# RUN : Network challenge 
+
+### 1. Add 'My current IP' temporary into the atlas project
+
+```
+# CODE_BLOCK_5
+from datetime import datetime, timedelta
+
+# Calculate the date and time 24 hours from now
+delete_after = (datetime.utcnow() + timedelta(hours=24)).isoformat() + 'Z'
+
+!atlas accessLists ...
+```
+
+> Docs : atlas [accessList](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-accessLists/#std-label-atlas-accessLists)
+
+<details>
+    <summary> Answer </summary>
+    ```
+    from datetime import datetime, timedelta
+
+# Calculate the date and time 24 hours from now
+delete_after = (datetime.utcnow() + timedelta(hours=24)).isoformat() + 'Z'
+
+
+
+!atlas accessLists create --currentIp --projectId {project_id} --deleteAfter "{delete_after}"
+```
+</details>
+
+### 2. Check that 'My current IP' was added:
+```
+# CODE_BLOCK_6
+!atlas accessLists list --output json --projectId {project_id}
+```
+
+## Next Steps
+
+Start the chapter on [Authentication](./authentication) for database user management.

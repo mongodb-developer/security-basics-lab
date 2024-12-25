@@ -1,0 +1,98 @@
+---
+sidebar_position: 2
+---
+
+# RUN : RBAC challenge
+
+> Hint! Remember to add the `--projectId {project_id}`
+
+> Docs : atlas [dbusers](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-dbusers-create/) , [customDbRoles](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-customDbRoles-create/)
+
+### 1. Let's create a user: 'myAdmin' with User/Password authentication and assign it the 'readWriteAnyDatabase' role, but only for the 'MyNewCluster' database.
+
+```
+# CODE_BLOCK_12
+!atlas dbusers create ...
+```
+
+<details>
+    <summary> Answer </summary>
+    ```
+!atlas dbusers create --username myAdmin --password secureAdminPass --role readWriteAnyDatabase --scope 'MyNewCluster'  --projectId {project_id}
+```
+</details>
+
+### 2. Let's create a user: 'readOnlyUser' with read-only access to the 'salesDB' database.
+
+```
+# CODE_BLOCK_13
+!atlas customDbRoles create ...
+!atlas dbusers create ...
+```
+
+<details>
+    <summary> Answer </summary>
+    ```
+!atlas customDbRoles create salesRead --inheritedRole read@salesDB --projectId {project_id}
+!atlas dbusers create --username readOnlyUser --password readOnlyPass --role salesRead --projectId {project_id}
+```
+</details>
+
+### 3. Let's test that the 'readOnlyUser' cannot insert data into the 'salesDB' database.
+
+```python
+# CODE_BLOCK_14
+# Assuming you have the connection string and credentials for the readOnlyUser
+username = 'readOnlyUser'
+password = 'readOnlyPass'
+
+connection = !atlas clusters connectionStrings describe MyNewCluster --projectId {project_id}
+new_connection = connection[1].replace('mongodb+srv://', f'mongodb+srv://{username}:{password}@')
+
+client = MongoClient(new_connection)
+db = client['salesDB']
+collection = db['mycollection']
+
+try:
+  # Attempt to insert data
+  data = {'name': 'John Doe', 'age': 30}
+  result = collection.insert_one(data)
+  print(f"Inserted document with ID: {result.inserted_id}")
+except Exception as e:
+  print(f"Error inserting data: {e}")
+```
+
+### 4. Let's test that the 'myAdmin' user can insert data into the 'salesDB' database.
+
+```python
+# CODE_BLOCK_15
+# Assuming you have the connection string and credentials for the myAdmin user
+...
+```
+<details>
+    <summary> Answer </summary>
+    ```python
+# Assuming you have the connection string and credentials for the myAdmin user
+username = 'myAdmin'
+password = 'secureAdminPass'
+
+connection = !atlas clusters connectionStrings describe MyNewCluster --projectId {project_id}
+new_connection = connection[1].replace('mongodb+srv://', f'mongodb+srv://{username}:{password}@')
+
+client = MongoClient(new_connection)
+db = client['salesDB']
+collection = db['mycollection']
+
+try:
+  # Attempt to insert data
+  data = {'name': 'John Doe', 'age': 30}
+  result = collection.insert_one(data)
+  print(f"Inserted document with ID: {result.inserted_id}")
+except Exception as e:
+  print(f"Error inserting data: {e}")
+```
+</details>
+
+## Next Steps
+
+Start the chapter on [Queryable Encryption](./queryable-encryption) for data encryption.

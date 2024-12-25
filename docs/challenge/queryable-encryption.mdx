@@ -1,0 +1,309 @@
+---
+sidebar_position: 2
+---
+
+# RUN : Queryable Encryption challenge
+
+> Hint! Remember to add the `--projectId {project_id}`
+
+> Docs :  [CSFLE](https://www.mongodb.com/docs/atlas/app-services/data-api/csfle/)
+
+### 1. Install the necessary packages.
+
+```
+# CODE_BLOCK_16
+!pip install pymongo[encryption]
+!pip install pymongo
+!pip install requests
+```
+
+### 2. Set up the crypt\_shared library.
+
+```python
+# CODE_BLOCK_17
+import os
+from pymongo import MongoClient
+from pymongo.encryption import Algorithm, ClientEncryption, QueryType
+from pymongo.encryption_options import AutoEncryptionOpts
+from bson.codec_options import CodecOptions
+from bson import json_util
+import json
+import requests
+import platform
+import tempfile
+
+def setup_crypt_shared():
+    system = platform.system().lower()
+    if system == "linux":
+        url = "https://downloads.mongodb.com/linux/mongo_crypt_shared_v1-linux-x86_64-enterprise-ubuntu2004-6.0.6.tgz"
+        filename = "mongo_crypt_shared_v1-linux-x86_64-enterprise-ubuntu2004-6.0.6.tgz"
+    elif system == "darwin":
+        url = "https://downloads.mongodb.com/osx/mongo_crypt_shared_v1-macos-x86_64-enterprise-6.0.6.tgz"
+        filename = "mongo_crypt_shared_v1-macos-x86_64-enterprise-6.0.6.tgz"
+    elif system == "windows":
+        url = "https://downloads.mongodb.com/windows/mongo_crypt_shared_v1-windows-x86_64-enterprise-6.0.6.zip"
+        filename = "mongo_crypt_shared_v1-windows-x86_64-enterprise-6.0.6.zip"
+    else:
+        raise OSError("Unsupported operating system")
+
+    response = requests.get(url)
+    response.raise_for_status()
+
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".tgz" if system != "windows" else ".zip") as tmp_file:
+        tmp_file.write(response.content)
+        tmp_file_path = tmp_file.name
+
+    extract_dir = tempfile.mkdtemp()
+
+    if system != "windows":
+        os.system(f"tar -xzf {tmp_file_path} -C {extract_dir}")
+        lib_path = os.path.join(extract_dir, "lib", "mongo_crypt_v1.so")
+    else:
+        os.system(f"powershell Expand-Archive -Path {tmp_file_path} -DestinationPath {extract_dir}")
+        lib_path = os.path.join(extract_dir, "bin", "mongo_crypt_v1.dll")
+
+    return lib_path
+
+crypt_shared_lib_path = setup_crypt_shared()
+print(f"Crypt shared library path: {crypt_shared_lib_path}")
+```
+
+### 3. Connect to your Atlas cluster.
+
+```python
+# CODE_BLOCK_18
+connection = !atlas clusters connectionStrings describe  MyNewCluster --projectId {project_id}
+
+username = 'myUser'
+password = 'mySecurePassword'
+
+new_connection = connection[1].replace('mongodb+srv://', f'mongodb+srv://{username}:{password}@')
+print(new_connection)
+
+from pymongo import MongoClient
+client = MongoClient(new_connection)
+```
+
+### 4. Set up encryption key and providers, define the encrypted fields map, create an encrypted client, and set up the key vault.
+
+```python
+# CODE_BLOCK_19
+
+import os
+from pymongo import MongoClient
+from pymongo.encryption import Algorithm, ClientEncryption, QueryType
+from pymongo.encryption_options import AutoEncryptionOpts
+from bson.codec_options import CodecOptions
+from bson import json_util
+import json
+import requests
+import platform
+import tempfile
+
+local_master_key = os.urandom(96)
+kms_providers = {"local": {"key": local_master_key}}
+key_vault_namespace = "encryption.__keyVault"
+kms_provider_name="local"
+key_vault_database_name = "encryption"
+key_vault_collection_name = "__keyVault"
+key_vault_namespace = f"{key_vault_database_name}.{key_vault_collection_name}"
+encrypted_database_name = "medicalRecords"
+encrypted_collection_name = "patients"
+
+auto_encryption_options = AutoEncryptionOpts(
+    kms_providers,
+    key_vault_namespace,
+    crypt_shared_lib_path=crypt_shared_lib_path
+)
+
+encrypted_client = MongoClient(
+    new_connection, auto_encryption_opts=auto_encryption_options)
+
+# TODO CODE_BLOCK_19
+
+encrypted_fields_map = ...
+
+client_encryption = ClientEncryption(
+    kms_providers=kms_providers,
+    key_vault_namespace=key_vault_namespace,
+    key_vault_client=encrypted_client,
+    codec_options=CodecOptions()
+)
+
+# TODO CODE_BLOCK_19
+
+client_encryption.create_encrypted_collection(
+    encrypted_client[encrypted_database_name],
+    encrypted_collection_name,
+    ... ,
+    kms_provider_name,
+    {},
+)
+
+```
+<details>
+    <summary> Answer </summary>
+    ```python
+import os
+from pymongo import MongoClient
+from pymongo.encryption import Algorithm, ClientEncryption, QueryType
+from pymongo.encryption_options import AutoEncryptionOpts
+from bson.codec_options import CodecOptions
+from bson import json_util
+import json
+import requests
+import platform
+import tempfile
+
+local_master_key = os.urandom(96)
+kms_providers = {"local": {"key": local_master_key}}
+key_vault_namespace = "encryption.__keyVault"
+kms_provider_name="local"
+key_vault_database_name = "encryption"
+key_vault_collection_name = "__keyVault"
+key_vault_namespace = f"{key_vault_database_name}.{key_vault_collection_name}"
+encrypted_database_name = "medicalRecords"
+encrypted_collection_name = "patients"
+
+auto_encryption_options = AutoEncryptionOpts(
+    kms_providers,
+    key_vault_namespace,
+    crypt_shared_lib_path=crypt_shared_lib_path
+)
+
+encrypted_client = MongoClient(
+    new_connection, auto_encryption_opts=auto_encryption_options)
+
+encrypted_fields_map = {
+    "fields": [
+        {
+            "path": "patientRecord.ssn",
+            "bsonType": "string",
+            "queries": [{"queryType": "equality"}] # potentially 'range'
+        },
+        {
+            "path": "patientRecord.billing",
+            "bsonType": "object",
+        }
+    ]
+}
+
+client_encryption = ClientEncryption(
+    kms_providers=kms_providers,
+    key_vault_namespace=key_vault_namespace,
+    key_vault_client=encrypted_client,
+    codec_options=CodecOptions()
+)
+
+client_encryption.create_encrypted_collection(
+    encrypted_client[encrypted_database_name],
+    encrypted_collection_name,
+    encrypted_fields_map,
+    kms_provider_name,
+    {},
+)
+```
+</details>
+
+### 5. Insert an encrypted document.
+
+```python
+# TODO CODE_BLOCK_20
+
+patient_document = {
+    "patientName": "Jon Doe",
+    "patientId": 12345678,
+    "patientRecord": {
+        "ssn": "987-65-4320",
+        "billing": {
+            "type": "Visa",
+            "number": "4111111111111111",
+        },
+    },
+}
+
+# TODO CODE_BLOCK_20
+
+encrypted_collection = #  encrypted_client ...
+result = encrypted_collection.insert_one(...)
+print(f"Inserted document ID: {result.inserted_id}")
+```
+<details>
+    <summary> Answer </summary>
+    ```python
+patient_document = {
+    "patientName": "Jon Doe",
+    "patientId": 12345678,
+    "patientRecord": {
+        "ssn": "987-65-4320",
+        "billing": {
+            "type": "Visa",
+            "number": "4111111111111111",
+        },
+    },
+}
+encrypted_collection = encrypted_client[encrypted_database_name][encrypted_collection_name]
+result = encrypted_collection.insert_one(patient_document)
+print(f"Inserted document ID: {result.inserted_id}")
+```
+</details>
+
+### 6. Query the encrypted collection.
+
+```python
+# TODO CODE_BLOCK_21
+
+find_result = encrypted_collection.find_one(...)
+print(find_result)
+...
+```
+<details>
+    <summary> Answer </summary>
+    ```python
+find_result = encrypted_collection.find_one({
+    "patientRecord.ssn": "987-65-4320"
+})
+print(find_result)
+```
+</details>
+
+### 7. Query the collection without encryption.
+
+```python
+# CODE_BLOCK_22
+
+reg_mongoclient = MongoClient(new_connection)
+
+
+# TODO CODE_BLOCK_22
+
+find_result = reg_mongoclient[encrypted_database_name][encrypted_collection_name].find_one(...)
+print(find_result)
+
+all_docs = reg_mongoclient[encrypted_database_name][encrypted_collection_name].find()
+print("\nAll documents in the collection:")
+for doc in all_docs:
+    print(doc)
+```
+<details>
+    <summary> Answer </summary>
+    ```python
+print("\nQuerying without encryption:")
+
+reg_mongoclient = MongoClient(new_connection)
+
+find_result = reg_mongoclient[encrypted_database_name][encrypted_collection_name].find_one({
+    "patientRecord.ssn": "987-65-4320"
+})
+print(find_result)
+
+all_docs = reg_mongoclient[encrypted_database_name][encrypted_collection_name].find()
+print("\nAll documents in the collection:")
+for doc in all_docs:
+    print(doc)
+```
+</details>
+
+## Next Steps
+
+Start the chapter on [On-Premises](./onprem) for self-managed deployments.
