@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdocusaurus_template_lab=self.webpackChunkdocusaurus_template_lab||[]).push([[2387],{2387:(e,a,s)=>{s.d(a,{createGitGraphServices:()=>u.b});var u=s(2785);s(9369)}}]);
