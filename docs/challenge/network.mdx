@@ -7,7 +7,7 @@ sidebar_position: 1
 
 ### 1. Add 'My current IP' temporary into the atlas project
 
-```
+```python
 # CODE_BLOCK_5
 from datetime import datetime, timedelta
 
@@ -21,7 +21,7 @@ delete_after = (datetime.utcnow() + timedelta(hours=24)).isoformat() + 'Z'
 
 <details>
     <summary> Answer </summary>
-    ```
+    ```python
     from datetime import datetime, timedelta
 
 # Calculate the date and time 24 hours from now
@@ -34,7 +34,7 @@ delete_after = (datetime.utcnow() + timedelta(hours=24)).isoformat() + 'Z'
 </details>
 
 ### 2. Check that 'My current IP' was added:
-```
+```python
 # CODE_BLOCK_6
 !atlas accessLists list --output json --projectId {project_id}
 ```

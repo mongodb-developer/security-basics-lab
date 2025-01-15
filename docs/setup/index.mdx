@@ -13,7 +13,7 @@ sidebar_position: 2
 This section will cover the required notebook operations that must be fulfilled to run the Challenges.
 
 ### 1. Install atlas CLI on the notebook environment.
-```
+```python
 # CODE_BLOCK_1
 # prompt: Install Atlas CLI using this link https://fastdl.mongodb.org/mongocli/mongodb-atlas-cli_1.31.0_linux_x86_64.deb
 
@@ -25,7 +25,7 @@ This section will cover the required notebook operations that must be fulfilled 
 ```
 
 ### 2. Authenticate the CLI against your Atlas organization.**
-```
+```python
 # CODE_BLOCK_2
 # Authenticate with Atlas CLI
 !atlas auth login
@@ -90,7 +90,7 @@ org_id = getpass.getpass('Enter your org ID: ')
 > **Hint!** :  Some notebook environments will need the getpass installation command `!pip install getpass`
 
 ### 4. Create your challenge cluster
-```
+```python
 # CODE_BLOCK_4
 project_id = getpass.getpass('Enter your project ID: ')
 !atlas clusters create MyNewCluster --provider AWS --region US_EAST_1 --tier M0 --projectId {project_id}

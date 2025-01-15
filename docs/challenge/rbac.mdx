@@ -10,21 +10,21 @@ sidebar_position: 2
 
 ### 1. Let's create a user: 'myAdmin' with User/Password authentication and assign it the 'readWriteAnyDatabase' role, but only for the 'MyNewCluster' database.
 
-```
+```python
 # CODE_BLOCK_12
 !atlas dbusers create ...
 ```
 
 <details>
     <summary> Answer </summary>
-    ```
+    ```python
 !atlas dbusers create --username myAdmin --password secureAdminPass --role readWriteAnyDatabase --scope 'MyNewCluster'  --projectId {project_id}
 ```
 </details>
 
 ### 2. Let's create a user: 'readOnlyUser' with read-only access to the 'salesDB' database.
 
-```
+```python
 # CODE_BLOCK_13
 !atlas customDbRoles create ...
 !atlas dbusers create ...
@@ -32,7 +32,7 @@ sidebar_position: 2
 
 <details>
     <summary> Answer </summary>
-    ```
+    ```python
 !atlas customDbRoles create salesRead --inheritedRole read@salesDB --projectId {project_id}
 !atlas dbusers create --username readOnlyUser --password readOnlyPass --role salesRead --projectId {project_id}
 ```
@@ -67,12 +67,6 @@ except Exception as e:
 ```python
 # CODE_BLOCK_15
 # Assuming you have the connection string and credentials for the myAdmin user
-...
-```
-<details>
-    <summary> Answer </summary>
-    ```python
-# Assuming you have the connection string and credentials for the myAdmin user
 username = 'myAdmin'
 password = 'secureAdminPass'
 
@@ -91,7 +85,6 @@ try:
 except Exception as e:
   print(f"Error inserting data: {e}")
 ```
-</details>
 
 ## Next Steps
 
