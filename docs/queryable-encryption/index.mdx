@@ -7,7 +7,17 @@ import TabItem from '@theme/TabItem';
 
 # Queryable Encryption
 
-Queryable Encryption allows you to run queries on encrypted data without decrypting it on the server side. This feature provides enhanced security by keeping sensitive data encrypted throughout its lifecycle while maintaining the ability to perform queries.
+## Introduction
+
+Queryable Encryption is a groundbreaking technology that allows you to run specific queries on encrypted data without the need to decrypt it on the server. In MongoDB, this means sensitive data can remain encrypted throughout its lifecycle – at rest, in transit, and even during query processing. By enabling Queryable Encryption, you significantly reduce the attack surface by minimizing the exposure of plaintext data, even to authorized database administrators. This strengthens your security posture and helps meet stringent compliance requirements.
+
+## Why is Queryable Encryption Important in MongoDB?
+
+MongoDB, while offering various security features, can benefit significantly from Queryable Encryption for scenarios involving highly sensitive data. By implementing it, you ensure:
+- **Enhanced Data Protection**: Sensitive data remains encrypted even when it is being processed on the database side, minimizing the risk of exposure in case of a security breach or unauthorized access.
+- **Compliance with Regulations**: Helps meet stringent data privacy regulations like GDPR, HIPAA, and others that mandate strong encryption and control over sensitive information.
+- **Reduced Insider Threat**: Even database administrators or authorized personnel with access to the database infrastructure cannot see the plaintext data without the appropriate decryption keys managed outside of the database.
+- **Maintain Functionality**: Unlike traditional encryption where data needs to be decrypted for querying, Queryable Encryption allows you to perform specific types of queries directly on the encrypted data, preserving application functionality.
 
 ## Overview
 
@@ -16,11 +26,11 @@ Queryable Encryption allows you to run queries on encrypted data without decrypt
 
 In MongoDB Atlas, Queryable Encryption is available for:
 - M10 or larger clusters
-- MongoDB 6.0 or later
+- MongoDB 7.0 or later
 - Enterprise or Atlas deployments
 
 To enable Queryable Encryption:
-1. Create an encryption key in your preferred Key Management System (AWS KMS, Azure Key Vault, GCP KMS)
+1. Create an encryption key in your preferred Key Management System (local, AWS KMS, Azure Key Vault, GCP KMS)
 2. Configure your Atlas cluster to use the KMS provider
 3. Use the MongoDB driver with Queryable Encryption support
 
@@ -28,8 +38,8 @@ To enable Queryable Encryption:
 <TabItem value="onprem" label="On-Premises">
 
 For self-hosted MongoDB deployments:
-- Requires Enterprise Edition
-- MongoDB 6.0 or later
+- Requires Enterprise Edition for Client Side Level Encryption (community versions support Queryable Encryption only)
+- MongoDB 7.0 or later
 - A supported Key Management System
 
 Configuration steps:
@@ -39,6 +49,12 @@ Configuration steps:
 
 </TabItem>
 </Tabs>
+
+## Key Concepts in Queryable Encryption:
+
+- **Key Management System (KMS)**: A secure system for managing encryption keys. MongoDB Queryable Encryption relies on either local keys/on-premises vaults like Hasicorp, or external KMS providers like AWS KMS, Azure Key Vault, Google Cloud KMS to store and manage the cryptographic keys.
+- **Encryption on Field Level Basis**: Encryption and decryption operations are performed on the client-side application before data is sent to or retrieved from the MongoDB server. This ensures that the server only handles encrypted data.
+- **Encryption Schema**: Defines which fields in your documents need to be encrypted and specifies the type of encryption to be used for each field, influencing the types of queries that can be performed on that field.
 
 ## Implementation
 
@@ -159,29 +175,33 @@ Queryable Encryption supports various query types depending on the encryption al
 
 1. **Equality Queries**
    - Exact matches on encrypted fields
-   - Supported by all encryption algorithms
+   - Supported with deterministic encryption
+   - Example: `{"encryptedField": "exactValue"}`
+
 
 2. **Range Queries**
    - Comparison operators ($gt, $gte, $lt, $lte)
+   - Available for range-queryable encrypted fields
+   - Example: `{"encryptedField": {"$gt": "value"}}`
    - Requires RangePreview algorithm
 
-3. **Prefix Queries**
-   - String prefix matching
-   - Requires specialized string encryption
 
 ## Best Practices
 
 1. **Key Management**
+   - Securely Manage KMS Credentials: Protect your KMS access keys and credentials diligently. Use best practices for secret management.
    - Regularly rotate encryption keys
    - Securely store and backup keys
    - Use separate keys for different environments
 
 2. **Performance Considerations**
+   - Understand Performance Implications: Queryable Encryption involves additional resources for indexing and storage on the server side. Test and optimize your application accordingly. Tune the relevant parameters and document design for best performance.
    - Index encrypted fields when needed
    - Monitor query performance on encrypted fields
    - Use appropriate encryption algorithms
 
 3. **Security Guidelines**
+   - Principle of Least Privilege: Grant only the necessary permissions to access encryption keys.
    - Follow the principle of least privilege
    - Encrypt only necessary fields
    - Regularly audit encryption configurations
@@ -193,3 +213,4 @@ For hands-on practice with Queryable Encryption concepts, check out our [practic
 ## Next Steps
 
 After implementing Queryable Encryption, you can reach the final closing phase of Additional Security Considerations and Summary.
+

@@ -16,11 +16,11 @@ Authentication is a crucial security feature that verifies the identity of clien
 
 MongoDB Atlas supports multiple authentication mechanisms:
 
-- **SCRAM (Default)**: The default and recommended mechanism for MongoDB, providing secure authentication using salted challenge-response methods.
+- **SCRAM (Default)**: The default and simplest mechanism for MongoDB, providing secure authentication using salted challenge-response methods. (For production deployment we recommend using a more advanced authentication mechanism)
 - **X.509 Certificate Authentication**: Certificate-based authentication that uses SSL/TLS certificates for verifying client identity, typically used in environments that require high security.
 - **AWS IAM Authentication**:MongoDB Atlas supports AWS IAM authentication, allowing users to authenticate using their AWS Identity and Access Management roles, which is useful for integration with AWS services.
-- **Workforce Federation Authentication**: Allows users to integrate MongoDB Atlas with external identity providers (IdPs) like Okta or Azure AD for centralized access management and single sign-on (SSO).
-- **Workload Federation Authentication**: Enables authentication for applications and workloads by allowing them to assume predefined roles, simplifying access management for services running in hybrid or multi-cloud environments.
+- **Workforce Identity Federation Authentication**: Allows users to integrate MongoDB Atlas with external identity providers (IdPs) like Okta or Azure AD for centralized access management and single sign-on (SSO).
+- **Workload Identity Federation Authentication**: Enables authentication for applications and workloads by allowing them to assume predefined roles, simplifying access management for services running in hybrid or multi-cloud environments.
 - **LDAP Authentication**: Allows integration with corporate directory services, enabling centralized management of user access across the organization.
 
 ### SCRAM Authentication
