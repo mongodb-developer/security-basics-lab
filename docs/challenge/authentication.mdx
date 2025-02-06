@@ -5,62 +5,70 @@ sidebar_position: 2
 
 # RUN : Authentication challenge 
 
-> Hint! Remember to add the `--projectId {project_id}`
+:::info
+The provided scripts are incomplete. Replace all `<CODE_BLOCK>` with the correct code to complete the lab.
+:::
 
-> Docs : atlas [dbusers](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-dbusers-create/)
+> Hint: Remember to add `--projectId {project_id}`
 
 
-### 1. Let's create a SCRAM user: 'myUser' with User/Password authentication and assign it the 'readWriteAnyDatabase' role.
+### 1. Create a SCRAM user
 
 ```python
-# CODE_BLOCK_7
-!atlas dbusers create ...
+# create a SCRAM user with username: "myUser", password: "mySecurePassword" and role: "readWriteAnyDatabase"
+username = "myUser"
+password = "mySecurePassword"
+!atlas dbusers create <CODE_BLOCK>
 ```
+> Refer to documentations: [atlas dbusers](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-dbusers-create/)
 
 
 <details>
     <summary> Answer </summary>
+    ```python
+    # create a SCRAM user with username: "myUser", password: "mySecurePassword" and role: "readWriteAnyDatabase"
+    username = "myUser"
+    password = "mySecurePassword"
+    !atlas dbusers create --username {username} --password {password} --role readWriteAnyDatabase --projectId {project_id}
     ```
-!atlas dbusers create --username myUser --password mySecurePassword --role readWriteAnyDatabase --projectId {project_id}
-```
 </details>
 
 ### 2. Lets test our SCRAM user successful creation by performing the authentication process
 ```python
-# CODE_BLOCK_8
 !pip install pymongo dnspython  
 ```
 ```python
-# CODE_BLOCK_9
+# retrieve connection string
 connection = !atlas clusters connectionStrings describe  MyNewCluster --projectId {project_id}
 
-username = 'myUser'
-password = 'mySecurePassword'
-
+# add username and password to connection string
 new_connection = connection[1].replace('mongodb+srv://', f'mongodb+srv://{username}:{password}@')
 print(new_connection)
 
+#make the connection get the list of databases
 from pymongo import MongoClient
 client = MongoClient(new_connection)
-
 client.list_database_names()
 ```
 
-### 3. Let's create  X509 user: 'myX509User' with User/Password authentication and assign it the 'readWriteAnyDatabase' role.
+### 3. Create a X509 user and certificate
 
 ```python
-# CODE_BLOCK_10
-!atlas dbusers create ...
-
-!atlas dbusers certs create ...  > /tmp/cert.pem
+# create a Atlas-managed X509 user with username: "myX509User" and role: "readAnyDatabase" 
+!atlas dbusers create <CODE_BLOCK>
+# Generate a certification for "myX509user", set monthsUntilExpiration to 1, and save it to /tmp/cert.pem
+!atlas dbusers certs create <CODE_BLOCK> > /tmp/cert.pem
 ```
+
+> Refer to documentations: [atlas dbusers](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-dbusers-create/) and [atlas dbusers certs](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-dbusers-certs-create/)
 
 <details>
     <summary> Answer </summary>
-    ```
-    # Generate an X509 certificate for a new user
-    !atlas dbusers create --username myX509User --x509Type MANAGED --role readAnyDatabase --projectId {project_id}
-    # Generate and save the certificate
+    ```python
+    # create a Atlas-managed X509 user with username: "myX509User" and role: "readAnyDatabase" 
+    !atlas dbusers create --username myX509User --role readAnyDatabase --x509Type MANAGED --projectId {project_id}
+
+    # Generate a certification for "myX509user", set monthsUntilExpiration to 1, and save it to /tmp/cert.pem
     !atlas dbusers certs create --username myX509User --monthsUntilExpiration 1 --projectId {project_id} > /tmp/cert.pem
     ```
 </details>
@@ -68,9 +76,10 @@ client.list_database_names()
 ### 4. Let's test our X509 User
 
 ```python
-# CODE_BLOCK_11
-username='myX509User'
+# Get connection string
 connection = !atlas clusters connectionStrings describe MyNewCluster --projectId {project_id}
+
+# Modify connection string to use X509 as authentication mechanism 
 new_connection = connection[1].replace('.net', '.net?authSource=%24external&authMechanism=MONGODB-X509')
 print(new_connection)
 
@@ -81,7 +90,6 @@ client = MongoClient(new_connection,
 
 # Access the database
 client.list_database_names()
-
 ```
 ## Next Steps
 
