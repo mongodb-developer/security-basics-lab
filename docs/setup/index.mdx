@@ -28,13 +28,10 @@ This section will cover the required notebook operations that must be fulfilled 
 ```python
 # CODE_BLOCK_2
 # Authenticate with Atlas CLI
-!atlas auth login
+!echo -e "\n" | atlas auth login --noBrowser
 ```
 
-**Important!** This task will need to be canceled after you click the connect link https://account.mongodb.com/account/connect and input the 8 digit code prompted. 
-
-Once logged in press the "stop" button on that notebook cell.
-
+**Important!** Click the connect link https://account.mongodb.com/account/connect and input the 8 digit code prompted. 
 
 <details>
 <summary> Example </summary>
