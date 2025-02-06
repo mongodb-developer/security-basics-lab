@@ -56,18 +56,21 @@ client.list_database_names()
 ```python
 # create a Atlas-managed X509 user with username: "myX509User" and role: "readAnyDatabase" 
 !atlas dbusers create <CODE_BLOCK>
+```
+> Refer to documentations: [atlas dbusers](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-dbusers-create/)
+```python
 # Generate a certification for "myX509user", set monthsUntilExpiration to 1, and save it to /tmp/cert.pem
 !atlas dbusers certs create <CODE_BLOCK> > /tmp/cert.pem
 ```
-
-> Refer to documentations: [atlas dbusers](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-dbusers-create/) and [atlas dbusers certs](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-dbusers-certs-create/)
+> Refer to documentations: [atlas dbusers certs](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-dbusers-certs-create/)
 
 <details>
     <summary> Answer </summary>
     ```python
     # create a Atlas-managed X509 user with username: "myX509User" and role: "readAnyDatabase" 
     !atlas dbusers create --username myX509User --role readAnyDatabase --x509Type MANAGED --projectId {project_id}
-
+    ```
+    ```python
     # Generate a certification for "myX509user", set monthsUntilExpiration to 1, and save it to /tmp/cert.pem
     !atlas dbusers certs create --username myX509User --monthsUntilExpiration 1 --projectId {project_id} > /tmp/cert.pem
     ```
