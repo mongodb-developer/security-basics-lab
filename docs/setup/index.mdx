@@ -14,27 +14,25 @@ This section will cover the required notebook operations that must be fulfilled 
 
 ### 1. Install atlas CLI on the notebook environment.
 ```python
-# CODE_BLOCK_1
-# prompt: Install Atlas CLI using this link https://fastdl.mongodb.org/mongocli/mongodb-atlas-cli_1.37.0_linux_x86_64.deb
+# Install atlas-cli
 
 !wget https://fastdl.mongodb.org/mongocli/mongodb-atlas-cli_1.37.0_linux_x86_64.deb
 !dpkg -i mongodb-atlas-cli_1.37.0_linux_x86_64.deb
 
-## Might require:
-## !sudo dpkg -i mongodb-atlas-cli_1.37.0_linux_x86_64.deb
+# If you require sudo privilege, run the following instead:
+# !sudo dpkg -i mongodb-atlas-cli_1.37.0_linux_x86_64.deb
 ```
 
-### 2. Authenticate the CLI against your Atlas organization.**
+### 2. Authenticate the CLI against your Atlas organization.
+`atlas auth login` typically enters interactive mode. 
+We are piping a new line character so that it selects a default organization for you. 
 ```python
-# CODE_BLOCK_2
 # Authenticate with Atlas CLI
 !echo -e "\n" | atlas auth login --noBrowser
 ```
 
-**Important!** Click the connect link https://account.mongodb.com/account/connect and input the 8 digit code prompted. 
-
 <details>
-<summary> Example </summary>
+<summary> Expand to see example </summary>
 
 Run the cell and get the verification code as well as the authentication link and open it in a new tab:
 
@@ -51,45 +49,27 @@ Confirm the CLI access and go back to the notebook:
 
 You should see an output in the notebook cell similar to:
 
-```
-To verify your account, copy your one-time verification code:
-F7JK-PTRT
-
-Paste the code in the browser when prompted to activate your Atlas CLI. Your code will expire after 10 minutes.
-
-To continue, go to https://account.mongodb.com/account/connect
-/usr/bin/xdg-open: 882: www-browser: not found
-/usr/bin/xdg-open: 882: links2: not found
-/usr/bin/xdg-open: 882: elinks: not found
-/usr/bin/xdg-open: 882: links: not found
-/usr/bin/xdg-open: 882: lynx: not found
-/usr/bin/xdg-open: 882: w3m: not found
-xdg-open: no method available for opening 'https://account.mongodb.com/account/connect'
-There was an issue opening your browser
-Successfully logged in as <youruser>@mongodb.com.
-Select one default organization and one default project.
-...
-```
-
-Take a note of the relevant Organization ID for next steps and "STOP" the cell.
 <img src="../img/SuccessPhase.png" />
+
+Take a note of the relevant Organization ID for next step.
+
 </details>
 
 ### 3. Create a new project called "MySecureProj"
+Replace `<ORGANIZATION_ID>` with the Organization ID from the previous step.
 ```
-# CODE_BLOCK_3
-import getpass
-
-org_id = getpass.getpass('Enter your org ID: ')
+# Retain the quotes ("") when pasting the Organization ID
+org_id = "<ORGANIZATION_ID>"
 !atlas projects create MySecureProj --orgId {org_id}
 ```
-
-> **Hint!** :  Some notebook environments will need the getpass installation command `!pip install getpass`
+There should be an output which shows the Project ID of the project created. Use this Project ID for the next step.
 
 ### 4. Create your challenge cluster
+Replace `<PROJECT_ID>` with the Project ID from the previous step.
 ```python
-# CODE_BLOCK_4
-project_id = getpass.getpass('Enter your project ID: ')
+# Retain the quotes ("") when pasting the Project ID
+project_id = "<PROJECT_ID>"
+# You may select a region closer to you instead of "US_EAST_1"
 !atlas clusters create MyNewCluster --provider AWS --region US_EAST_1 --tier M0 --projectId {project_id}
 ```
 
