@@ -2,11 +2,15 @@
 sidebar_position: 2
 ---
 
-# RUN : Queryable Encryption challenge
+# 👐 RUN : Queryable Encryption challenge
 
-> Hint! Remember to add the `--projectId {project_id}`
+:::tip
+ Remember to add the `--projectId {project_id}`
+:::
 
+:::info
 > Docs :  [CSFLE](https://www.mongodb.com/docs/atlas/app-services/data-api/csfle/)
+:::
 
 ### 1. Install the necessary packages.
 
@@ -89,17 +93,6 @@ client = MongoClient(new_connection)
 ```python
 # CODE_BLOCK_19
 
-import os
-from pymongo import MongoClient
-from pymongo.encryption import Algorithm, ClientEncryption, QueryType
-from pymongo.encryption_options import AutoEncryptionOpts
-from bson.codec_options import CodecOptions
-from bson import json_util
-import json
-import requests
-import platform
-import tempfile
-
 local_master_key = os.urandom(96)
 kms_providers = {"local": {"key": local_master_key}}
 key_vault_namespace = "encryption.__keyVault"
@@ -118,10 +111,6 @@ auto_encryption_options = AutoEncryptionOpts(
 
 encrypted_client = MongoClient(
     new_connection, auto_encryption_opts=auto_encryption_options)
-
-# TODO CODE_BLOCK_19
-
-encrypted_fields_map = ...
 
 client_encryption = ClientEncryption(
     kms_providers=kms_providers,
@@ -129,50 +118,48 @@ client_encryption = ClientEncryption(
     key_vault_client=encrypted_client,
     codec_options=CodecOptions()
 )
+```
+
+### 5. Consider the following patient document:
+
+```python
+patient_document = {
+    "patientName": "Jon Doe",
+    "patientId": 12345678,
+    "patientRecord": {
+        "ssn": "987-65-4320",
+        "billing": {
+            "type": "Visa",
+            "number": "4111111111111111",
+        },
+    },
+}
+```
+ ### 6. Create an encrypted collection based on the following requirements:
+- 'patientId' and 'billing' must be encrypted
+- patients will be queried by 'patientId'
+
+```python
+# TODO CODE_BLOCK_19
+
+encrypted_fields_map = <CODE_BLOCK_19>
 
 # TODO CODE_BLOCK_19
 
 client_encryption.create_encrypted_collection(
     encrypted_client[encrypted_database_name],
     encrypted_collection_name,
-    ... ,
+    <CODE_BLOCK_19>,
     kms_provider_name,
     {},
 )
 
 ```
+
+:::tip
 <details>
     <summary> Answer </summary>
     ```python
-import os
-from pymongo import MongoClient
-from pymongo.encryption import Algorithm, ClientEncryption, QueryType
-from pymongo.encryption_options import AutoEncryptionOpts
-from bson.codec_options import CodecOptions
-from bson import json_util
-import json
-import requests
-import platform
-import tempfile
-
-local_master_key = os.urandom(96)
-kms_providers = {"local": {"key": local_master_key}}
-key_vault_namespace = "encryption.__keyVault"
-kms_provider_name="local"
-key_vault_database_name = "encryption"
-key_vault_collection_name = "__keyVault"
-key_vault_namespace = f"{key_vault_database_name}.{key_vault_collection_name}"
-encrypted_database_name = "medicalRecords"
-encrypted_collection_name = "patients"
-
-auto_encryption_options = AutoEncryptionOpts(
-    kms_providers,
-    key_vault_namespace,
-    crypt_shared_lib_path=crypt_shared_lib_path
-)
-
-encrypted_client = MongoClient(
-    new_connection, auto_encryption_opts=auto_encryption_options)
 
 encrypted_fields_map = {
     "fields": [
@@ -187,14 +174,6 @@ encrypted_fields_map = {
         }
     ]
 }
-
-client_encryption = ClientEncryption(
-    kms_providers=kms_providers,
-    key_vault_namespace=key_vault_namespace,
-    key_vault_client=encrypted_client,
-    codec_options=CodecOptions()
-)
-
 client_encryption.create_encrypted_collection(
     encrypted_client[encrypted_database_name],
     encrypted_collection_name,
@@ -204,59 +183,44 @@ client_encryption.create_encrypted_collection(
 )
 ```
 </details>
+:::
 
-### 5. Insert an encrypted document.
+### 7. Insert an encrypted document.
+
 
 ```python
-# TODO CODE_BLOCK_20
 
-patient_document = {
-    "patientName": "Jon Doe",
-    "patientId": 12345678,
-    "patientRecord": {
-        "ssn": "987-65-4320",
-        "billing": {
-            "type": "Visa",
-            "number": "4111111111111111",
-        },
-    },
-}
 
 # TODO CODE_BLOCK_20
 
-encrypted_collection = #  encrypted_client ...
-result = encrypted_collection.insert_one(...)
+encrypted_collection = encrypted_client[encrypted_database_name][encrypted_collection_name]
+result = <CODE_BLOCK_20>
 print(f"Inserted document ID: {result.inserted_id}")
 ```
+:::tip
 <details>
     <summary> Answer </summary>
     ```python
-patient_document = {
-    "patientName": "Jon Doe",
-    "patientId": 12345678,
-    "patientRecord": {
-        "ssn": "987-65-4320",
-        "billing": {
-            "type": "Visa",
-            "number": "4111111111111111",
-        },
-    },
-}
+
 encrypted_collection = encrypted_client[encrypted_database_name][encrypted_collection_name]
 result = encrypted_collection.insert_one(patient_document)
 print(f"Inserted document ID: {result.inserted_id}")
 ```
+
+
 </details>
+:::
 
 ### 6. Query the encrypted collection.
 
 ```python
 # TODO CODE_BLOCK_21
 
-find_result = encrypted_collection.find_one(...)
+find_result = <CODE_BLOCK_21>
 print(find_result)
 ...
 ```
+:::tip
 <details>
     <summary> Answer </summary>
     ```python
@@ -266,6 +230,7 @@ find_result = encrypted_collection.find_one({
 print(find_result)
 ```
 </details>
+:::
 
 ### 7. Query the collection without encryption.
 
@@ -285,6 +250,7 @@ print("\nAll documents in the collection:")
 for doc in all_docs:
     print(doc)
 ```
+:::tip
 <details>
     <summary> Answer </summary>
     ```python
@@ -303,6 +269,7 @@ for doc in all_docs:
     print(doc)
 ```
 </details>
+:::
 
 ## Next Steps
 

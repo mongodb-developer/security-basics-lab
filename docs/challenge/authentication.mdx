@@ -3,7 +3,7 @@ sidebar_position: 2
 ---
 
 
-# RUN : Authentication challenge 
+# 👐 RUN : Authentication challenge 
 
 > Hint! Remember to add the `--projectId {project_id}`
 
@@ -14,16 +14,17 @@ sidebar_position: 2
 
 ```python
 # CODE_BLOCK_7
-!atlas dbusers create ...
+!atlas dbusers create <CODE_BLOCK_7>
 ```
 
-
+:::tip
 <details>
     <summary> Answer </summary>
     ```
 !atlas dbusers create --username myUser --password mySecurePassword --role readWriteAnyDatabase --projectId {project_id}
 ```
 </details>
+:::
 
 ### 2. Lets test our SCRAM user successful creation by performing the authentication process
 ```python
@@ -52,9 +53,10 @@ client.list_database_names()
 # CODE_BLOCK_10
 !atlas dbusers create ...
 
-!atlas dbusers certs create ...  > /tmp/cert.pem
+!atlas dbusers certs create <CODE_BLOCK_10>  > /tmp/cert.pem
 ```
 
+:::tip
 <details>
     <summary> Answer </summary>
     ```
@@ -64,6 +66,7 @@ client.list_database_names()
     !atlas dbusers certs create --username myX509User --monthsUntilExpiration 1 --projectId {project_id} > /tmp/cert.pem
     ```
 </details>
+:::
 
 ### 4. Let's test our X509 User
 
