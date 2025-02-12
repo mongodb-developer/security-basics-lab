@@ -13,7 +13,9 @@ sidebar_position: 2
  **Important! Each code block is marked with a number associated to the tutorial here.**
 :::
 
-:::
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mongodb-developer/security-lab-notebooks/blob/main/template_notebook.ipynb)
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=mongodb-developer/security-lab-notebooks)
 
 This section will cover the required notebook operations that must be fulfilled to run the Challenges.
 
@@ -29,7 +31,7 @@ This section will cover the required notebook operations that must be fulfilled 
 ## !sudo dpkg -i mongodb-atlas-cli_1.31.0_linux_x86_64.deb
 ```
 
-### 2. Authenticate the CLI against your Atlas organization.**
+### 2. Authenticate the CLI against your Atlas organization.
 ```python
 # CODE_BLOCK_2
 # Authenticate with Atlas CLI
@@ -80,21 +82,21 @@ Take a note of the relevant Organization ID for next steps and "STOP" the cell.
 
 :::
 
-### 3. Create a new project called "MySecureProj"
+### 3. Create a new project called "MySecureProj" on your orgonisation of choice
 ```
 # CODE_BLOCK_3
-import getpass
-
-org_id = getpass.getpass('Enter your org ID: ')
+org_id = "<ORGANIZATION_ID>"
 !atlas projects create MySecureProj --orgId {org_id}
 ```
+
+This cell should print out the project id you need for the next step.
 
 > **Hint!** :  Some notebook environments will need the getpass installation command `!pip install getpass`
 
 ### 4. Create your challenge cluster
 ```python
 # CODE_BLOCK_4
-project_id = getpass.getpass('Enter your project ID: ')
+project_id = "<PROJECT_ID>"
 !atlas clusters create MyNewCluster --provider AWS --region US_EAST_1 --tier M0 --projectId {project_id}
 ```
 

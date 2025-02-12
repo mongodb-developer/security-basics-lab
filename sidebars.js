@@ -13,7 +13,7 @@ const sidebars = {
         {
           type: 'doc',
           id: 'setup/index',
-          label: 'Run: Initial Setup',
+          label: '👐 Run: Initial Setup',
         },
         {
           type: 'doc',
@@ -23,7 +23,7 @@ const sidebars = {
         {
           type: 'doc',
           id: 'challenge/network',
-          label : 'Run: Setup Network Access'
+          label : '👐 Run: Setup Network Access'
         }]
     },
     { 
@@ -37,7 +37,7 @@ const sidebars = {
     {
       type: 'doc',
       id: 'challenge/authentication',
-      label: 'Run: Setup Authentication',
+      label: '👐 Run: Setup Authentication',
     }
    ]},
     {
@@ -52,7 +52,7 @@ const sidebars = {
         {
           type: 'doc',
           id: 'challenge/rbac',
-          label: 'Run: Setup RBAC',
+          label: '👐 Run: Setup RBAC',
         },
       ],
     },
@@ -68,7 +68,7 @@ const sidebars = {
         {
           type: 'doc',
           id: 'challenge/queryable-encryption',
-          label: 'Run: Setup Queryable Encryption',
+          label: '👐 Run: Setup Queryable Encryption',
         },
       ],
     },
