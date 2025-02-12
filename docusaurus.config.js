@@ -164,7 +164,7 @@ const config = {
         additionalLanguages: ["powershell", "yaml", "json"],
       },
     }),
-  
+
   markdown: {
     mermaid: true,
   },

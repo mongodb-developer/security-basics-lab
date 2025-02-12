@@ -15,7 +15,6 @@ sidebar_position: 2
 ### 1. Install the necessary packages.
 
 ```python
-# CODE_BLOCK_16
 !pip install pymongo[encryption]
 !pip install pymongo
 !pip install requests
@@ -24,7 +23,6 @@ sidebar_position: 2
 ### 2. Set up the crypt\_shared library.
 
 ```python
-# CODE_BLOCK_17
 import os
 from pymongo import MongoClient
 from pymongo.encryption import Algorithm, ClientEncryption, QueryType
@@ -75,33 +73,26 @@ print(f"Crypt shared library path: {crypt_shared_lib_path}")
 ### 3. Connect to your Atlas cluster.
 
 ```python
-# CODE_BLOCK_18
 connection = !atlas clusters connectionStrings describe  MyNewCluster --projectId {project_id}
-
-username = 'myUser'
-password = 'mySecurePassword'
-
 new_connection = connection[1].replace('mongodb+srv://', f'mongodb+srv://{username}:{password}@')
 print(new_connection)
-
 from pymongo import MongoClient
 client = MongoClient(new_connection)
 ```
 
-### 4. Set up encryption key and providers, define the encrypted fields map, create an encrypted client, and set up the key vault.
+### 4. Set up an encrypted client using a local KMS provider.
 
 ```python
-# CODE_BLOCK_19
-
+# generate a random 96 byte key
 local_master_key = os.urandom(96)
+
+# configure encryption options
 kms_providers = {"local": {"key": local_master_key}}
 key_vault_namespace = "encryption.__keyVault"
-kms_provider_name="local"
 key_vault_database_name = "encryption"
 key_vault_collection_name = "__keyVault"
 key_vault_namespace = f"{key_vault_database_name}.{key_vault_collection_name}"
-encrypted_database_name = "medicalRecords"
-encrypted_collection_name = "patients"
+
 
 auto_encryption_options = AutoEncryptionOpts(
     kms_providers,
@@ -109,8 +100,10 @@ auto_encryption_options = AutoEncryptionOpts(
     crypt_shared_lib_path=crypt_shared_lib_path
 )
 
+# set up client and encryption
 encrypted_client = MongoClient(
     new_connection, auto_encryption_opts=auto_encryption_options)
+
 
 client_encryption = ClientEncryption(
     kms_providers=kms_providers,
@@ -120,8 +113,8 @@ client_encryption = ClientEncryption(
 )
 ```
 
-### 5. Consider the following patient document:
 
+### 5. Consider the following sample 'patient' document:
 ```python
 patient_document = {
     "patientName": "Jon Doe",
@@ -135,45 +128,19 @@ patient_document = {
     },
 }
 ```
- ### 6. Create an encrypted collection based on the following requirements:
+
+### 6. Create an encrypted collection based on the following requirements:
 - 'patientId' and 'billing' must be encrypted
 - patients will be queried by 'patientId'
 
+
 ```python
-# TODO CODE_BLOCK_19
+# Create encrypted fields map
+encrypted_fields_map = <CODE_BLOCK>
 
-encrypted_fields_map = <CODE_BLOCK_19>
-
-# TODO CODE_BLOCK_19
-
-client_encryption.create_encrypted_collection(
-    encrypted_client[encrypted_database_name],
-    encrypted_collection_name,
-    <CODE_BLOCK_19>,
-    kms_provider_name,
-    {},
-)
-
-```
-
-:::tip
-<details>
-    <summary> Answer </summary>
-    ```python
-
-encrypted_fields_map = {
-    "fields": [
-        {
-            "path": "patientRecord.ssn",
-            "bsonType": "string",
-            "queries": [{"queryType": "equality"}] # potentially 'range'
-        },
-        {
-            "path": "patientRecord.billing",
-            "bsonType": "object",
-        }
-    ]
-}
+encrypted_database_name = 'medicalRecords'
+encrypted_collection_name = 'patients'
+kms_provider_name = 'local'
 client_encryption.create_encrypted_collection(
     encrypted_client[encrypted_database_name],
     encrypted_collection_name,
@@ -182,94 +149,113 @@ client_encryption.create_encrypted_collection(
     {},
 )
 ```
+
+<details>
+    <summary> Answer </summary>
+    ```python
+    # Create encrypted fields map
+    encrypted_fields_map = {
+        'fields': [
+            {
+                'path': 'patientRecord.ssn',
+                'bsonType': 'string',
+                'queries': [{'queryType': 'equality'}]
+            },
+            {
+                'path': 'patientRecord.billing',
+                'bsonType': 'object'
+            }
+        ] 
+    }
+
+    encrypted_database_name = 'medicalRecords'
+    encrypted_collection_name = 'patients'
+    kms_provider_name = 'local'
+    client_encryption.create_encrypted_collection(
+        encrypted_client[encrypted_database_name],
+        encrypted_collection_name,
+        encrypted_fields_map,
+        kms_provider_name,
+        {},
+    )
+    ```
 </details>
-:::
 
-### 7. Insert an encrypted document.
-
+### 5. Insert the sample 'patient' document.
 
 ```python
-
-
-# TODO CODE_BLOCK_20
-
 encrypted_collection = encrypted_client[encrypted_database_name][encrypted_collection_name]
-result = <CODE_BLOCK_20>
+result = <CODE_BLOCK>
 print(f"Inserted document ID: {result.inserted_id}")
 ```
+
 :::tip
 <details>
     <summary> Answer </summary>
     ```python
-
-encrypted_collection = encrypted_client[encrypted_database_name][encrypted_collection_name]
-result = encrypted_collection.insert_one(patient_document)
-print(f"Inserted document ID: {result.inserted_id}")
-```
-
-
+    encrypted_collection = encrypted_client[encrypted_database_name][encrypted_collection_name]
+    result = encrypted_collection.insert_one(patient_document)
+    print(f"Inserted document ID: {result.inserted_id}")
+    ```
 </details>
 :::
 
-### 6. Query the encrypted collection.
+### 6. Find the patient by its 'ssn':
 
 ```python
-# TODO CODE_BLOCK_21
-
-find_result = <CODE_BLOCK_21>
+find_result = <CODE_BLOCK>
 print(find_result)
-...
 ```
+
+
+You should be able to successfully retrieve the patient.
+
 :::tip
 <details>
     <summary> Answer </summary>
     ```python
-find_result = encrypted_collection.find_one({
-    "patientRecord.ssn": "987-65-4320"
-})
-print(find_result)
-```
+    find_result = encrypted_collection.find_one({
+        "patientRecord.ssn": "987-65-4320"
+    })
+    print(find_result)
+    ```
 </details>
 :::
 
-### 7. Query the collection without encryption.
+### 7. Make the same query the collection without encryption/decryption.
 
 ```python
-# CODE_BLOCK_22
-
 reg_mongoclient = MongoClient(new_connection)
-
-
-# TODO CODE_BLOCK_22
-
-find_result = reg_mongoclient[encrypted_database_name][encrypted_collection_name].find_one(...)
+reg_collection = reg_mongoclient[encrypted_database_name][encrypted_collection_name] 
+find_result = <CODE_BLOCK>
 print(find_result)
+```
+You should not be able to find a record since the 'ssn' in the document is encrypted.
 
+:::tip
+<details>
+    <summary> Answer </summary>
+    ```python
+    reg_mongoclient = MongoClient(new_connection)
+    reg_collection = reg_mongoclient[encrypted_database_name][encrypted_collection_name] 
+    find_result = reg_collection.find_one({
+        "patientRecord.ssn": "987-65-4320"
+    })
+    print(find_result)
+    ```
+</details>
+:::
+
+### 8. Read all documents in the collection without encryption/decryption.
+```python
 all_docs = reg_mongoclient[encrypted_database_name][encrypted_collection_name].find()
 print("\nAll documents in the collection:")
 for doc in all_docs:
     print(doc)
 ```
-:::tip
-<details>
-    <summary> Answer </summary>
-    ```python
-print("\nQuerying without encryption:")
 
-reg_mongoclient = MongoClient(new_connection)
+You will be able to retrieve the documents, but encrypted data stays encrypted.
 
-find_result = reg_mongoclient[encrypted_database_name][encrypted_collection_name].find_one({
-    "patientRecord.ssn": "987-65-4320"
-})
-print(find_result)
-
-all_docs = reg_mongoclient[encrypted_database_name][encrypted_collection_name].find()
-print("\nAll documents in the collection:")
-for doc in all_docs:
-    print(doc)
-```
-</details>
-:::
 
 ## Next Steps
 

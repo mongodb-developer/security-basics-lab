@@ -10,7 +10,7 @@ sidebar_position: 2
  You can clone our template or use it in one of the online environments: https://github.com/mongodb-developer/security-lab-notebooks/blob/main/template_notebook.ipynb
 
 :::tip
- **Important! Each code block is marked with a number associated to the tutorial here.**
+ **Important! Each code that needs to be edited is marked with `<CODE_BLOCK>`.**
 :::
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mongodb-developer/security-lab-notebooks/blob/main/template_notebook.ipynb)
@@ -21,22 +21,25 @@ This section will cover the required notebook operations that must be fulfilled 
 
 ### 1. Install atlas CLI on the notebook environment.
 ```python
-# CODE_BLOCK_1
-# prompt: Install Atlas CLI using this link https://fastdl.mongodb.org/mongocli/mongodb-atlas-cli_1.31.0_linux_x86_64.deb
+# Install atlas-cli
 
-!wget https://fastdl.mongodb.org/mongocli/mongodb-atlas-cli_1.31.0_linux_x86_64.deb
-!dpkg -i mongodb-atlas-cli_1.31.0_linux_x86_64.deb
+!wget https://fastdl.mongodb.org/mongocli/mongodb-atlas-cli_1.37.0_linux_x86_64.deb
+!dpkg -i mongodb-atlas-cli_1.37.0_linux_x86_64.deb
 
-## Might require:
-## !sudo dpkg -i mongodb-atlas-cli_1.31.0_linux_x86_64.deb
+# If you require sudo privilege, run the following instead:
+# !sudo dpkg -i mongodb-atlas-cli_1.37.0_linux_x86_64.deb
 ```
 
 ### 2. Authenticate the CLI against your Atlas organization.
+
+`atlas auth login` typically enters interactive mode. 
+We are piping a new line character so that it selects a default organization for you. 
+
 ```python
-# CODE_BLOCK_2
 # Authenticate with Atlas CLI
 !echo -e "\n" | atlas auth login --noBrowser
 ```
+
 
 :::tip
 
@@ -46,7 +49,7 @@ Once logged in you should see a success mark on that cell.
 
 
 <details>
-<summary> Example </summary>
+<summary> Expand to see example </summary>
 
 Run the cell and get the verification code as well as the authentication link and open it in a new tab:
 
@@ -63,6 +66,7 @@ Confirm the CLI access and go back to the notebook:
 
 You should see an output in the notebook cell similar to:
 
+
 ```
 To verify your account, copy your one-time verification code:
 X9G4-KP98
@@ -77,26 +81,31 @@ Successfully logged in as pavel.duchovny@mongodb.com.
 
 
 Take a note of the relevant Organization ID for next steps and "STOP" the cell.
+
 <img src="../img/SuccessPhase.png" />
+
+Take a note of the relevant Organization ID for next step.
+
 </details>
 
-:::
 
-### 3. Create a new project called "MySecureProj" on your orgonisation of choice
+### 3. Create a new project called "MySecureProj"
+Replace `<ORGANIZATION_ID>` with the Organization ID from the previous step.
 ```
-# CODE_BLOCK_3
+# Retain the quotes ("") when pasting the Organization ID
 org_id = "<ORGANIZATION_ID>"
 !atlas projects create MySecureProj --orgId {org_id}
 ```
+There should be an output which shows the Project ID of the project created. Use this Project ID for the next step.
 
-This cell should print out the project id you need for the next step.
-
-> **Hint!** :  Some notebook environments will need the getpass installation command `!pip install getpass`
 
 ### 4. Create your challenge cluster
+Replace `<PROJECT_ID>` with the Project ID from the previous step.
 ```python
-# CODE_BLOCK_4
+# Retain the quotes ("") when pasting the Project ID
 project_id = "<PROJECT_ID>"
+# You may select a region closer to you instead of "US_EAST_1"
+
 !atlas clusters create MyNewCluster --provider AWS --region US_EAST_1 --tier M0 --projectId {project_id}
 ```
 

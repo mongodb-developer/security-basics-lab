@@ -5,10 +5,13 @@ sidebar_position: 1
 
 # 👐 RUN : Network challenge 
 
+:::info
+The provided scripts are incomplete. Replace all `<CODE_BLOCK>` with the correct code to complete the lab.
+:::
+
 ### 1. Add 'My current IP' temporary into the atlas project
 
 ```python
-# CODE_BLOCK_5
 from datetime import datetime, timedelta
 
 # Calculate the date and time 24 hours from now
@@ -18,7 +21,7 @@ delete_after = (datetime.utcnow() + timedelta(hours=24)).isoformat() + 'Z'
 ```
 
 :::tip
-> Docs : atlas [accessList](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-accessLists/#std-label-atlas-accessLists)
+Docs : atlas [accessList](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-accessLists/#std-label-atlas-accessLists)
 
 <details>
     <summary> Answer </summary>
@@ -28,8 +31,6 @@ delete_after = (datetime.utcnow() + timedelta(hours=24)).isoformat() + 'Z'
 # Calculate the date and time 24 hours from now
 delete_after = (datetime.utcnow() + timedelta(hours=24)).isoformat() + 'Z'
 
-
-
 !atlas accessLists create --currentIp --projectId {project_id} --deleteAfter "{delete_after}"
 ```
 </details>
@@ -38,7 +39,6 @@ delete_after = (datetime.utcnow() + timedelta(hours=24)).isoformat() + 'Z'
 
 ### 2. Check that 'My current IP' was added:
 ```python
-# CODE_BLOCK_6
 !atlas accessLists list --output json --projectId {project_id}
 ```
 
