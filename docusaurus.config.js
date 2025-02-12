@@ -82,7 +82,7 @@ const config = {
   title: `${title}`,
   tagline: `${tagLine}`,
   url: `https://${organizationName}.github.io`,
-  baseUrl: `/`,
+  baseUrl: `/${workshopName}/`,
   projectName: `${workshopName}`,
   organizationName: `${organizationName}`,
   trailingSlash: false,

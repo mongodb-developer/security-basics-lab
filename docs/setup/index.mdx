@@ -2,13 +2,20 @@
 sidebar_position: 2
 ---
 
-# Initial Setup and access for Atlas CLI
+# 👐 Initial Setup and access for Atlas CLI
 
 **Run this section in your notebook**
 
-> You can clone our template or use it in one of the [online environments](https://github.com/mongodb-developer/security-lab-notebooks/blob/main/template_notebook.ipynb):
->
-> **Important! Each code block is marked with a number associated to the tutorial here.**
+:::info
+ You can clone our template or use it in one of the online environments: https://github.com/mongodb-developer/security-lab-notebooks/blob/main/template_notebook.ipynb
+
+:::tip
+ **Important! Each code that needs to be edited is marked with `<CODE_BLOCK>`.**
+:::
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mongodb-developer/security-lab-notebooks/blob/main/template_notebook.ipynb)
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=mongodb-developer/security-lab-notebooks)
 
 This section will cover the required notebook operations that must be fulfilled to run the Challenges.
 
@@ -24,12 +31,22 @@ This section will cover the required notebook operations that must be fulfilled 
 ```
 
 ### 2. Authenticate the CLI against your Atlas organization.
+
 `atlas auth login` typically enters interactive mode. 
 We are piping a new line character so that it selects a default organization for you. 
+
 ```python
 # Authenticate with Atlas CLI
 !echo -e "\n" | atlas auth login --noBrowser
 ```
+
+
+:::tip
+
+**Important!** This task requires you to click the connect link https://account.mongodb.com/account/connect and input the 8 digit code prompted. 
+
+Once logged in you should see a success mark on that cell.
+
 
 <details>
 <summary> Expand to see example </summary>
@@ -49,11 +66,28 @@ Confirm the CLI access and go back to the notebook:
 
 You should see an output in the notebook cell similar to:
 
+
+```
+To verify your account, copy your one-time verification code:
+X9G4-KP98
+
+Paste the code in the browser when prompted to activate your Atlas CLI. Your code will expire after 10 minutes.
+
+To continue, go to https://account.mongodb.com/account/connect
+Successfully logged in as pavel.duchovny@mongodb.com.
+
+...
+```
+
+
+Take a note of the relevant Organization ID for next steps and "STOP" the cell.
+
 <img src="../img/SuccessPhase.png" />
 
 Take a note of the relevant Organization ID for next step.
 
 </details>
+
 
 ### 3. Create a new project called "MySecureProj"
 Replace `<ORGANIZATION_ID>` with the Organization ID from the previous step.
@@ -64,12 +98,14 @@ org_id = "<ORGANIZATION_ID>"
 ```
 There should be an output which shows the Project ID of the project created. Use this Project ID for the next step.
 
+
 ### 4. Create your challenge cluster
 Replace `<PROJECT_ID>` with the Project ID from the previous step.
 ```python
 # Retain the quotes ("") when pasting the Project ID
 project_id = "<PROJECT_ID>"
 # You may select a region closer to you instead of "US_EAST_1"
+
 !atlas clusters create MyNewCluster --provider AWS --region US_EAST_1 --tier M0 --projectId {project_id}
 ```
 

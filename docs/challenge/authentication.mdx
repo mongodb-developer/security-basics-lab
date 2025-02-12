@@ -3,7 +3,7 @@ sidebar_position: 2
 ---
 
 
-# RUN : Authentication challenge 
+# 👐 RUN : Authentication challenge 
 
 :::info
 The provided scripts are incomplete. Replace all `<CODE_BLOCK>` with the correct code to complete the lab.
@@ -22,7 +22,7 @@ password = "mySecurePassword"
 ```
 > Refer to documentations: [atlas dbusers](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-dbusers-create/)
 
-
+:::tip
 <details>
     <summary> Answer </summary>
     ```python
@@ -32,11 +32,14 @@ password = "mySecurePassword"
     !atlas dbusers create --username {username} --password {password} --role readWriteAnyDatabase --projectId {project_id}
     ```
 </details>
+:::
 
 ### 2. Lets test our SCRAM user successful creation by performing the authentication process
+
 ```python
 !pip install pymongo dnspython  
 ```
+
 ```python
 # retrieve connection string
 connection = !atlas clusters connectionStrings describe  MyNewCluster --projectId {project_id}
@@ -64,6 +67,7 @@ client.list_database_names()
 ```
 > Refer to documentations: [atlas dbusers certs](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-dbusers-certs-create/)
 
+:::tip
 <details>
     <summary> Answer </summary>
     ```python
@@ -75,6 +79,7 @@ client.list_database_names()
     !atlas dbusers certs create --username myX509User --monthsUntilExpiration 1 --projectId {project_id} > /tmp/cert.pem
     ```
 </details>
+:::
 
 ### 4. Let's test our X509 User
 

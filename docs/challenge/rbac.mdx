@@ -2,16 +2,17 @@
 sidebar_position: 2
 ---
 
-# RUN : RBAC challenge
+# 👐 RUN : RBAC challenge
+:::tip
 
 :::info
 The provided scripts are incomplete. Replace all `<CODE_BLOCK>` with the correct code to complete the lab.
 :::
 
-> Hint: Remember to add `--projectId {project_id}`
-
-> Refer to documentations : [atlas dbusers](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-dbusers-create/) , [atlas customDbRoles](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-customDbRoles-create/)
-
+:::tip
+ Hint: Remember to add `--projectId {project_id}`
+ Refer to documentations : [atlas dbusers](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-dbusers-create/) , [atlas customDbRoles](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-customDbRoles-create/)
+:::
 ### 1. Create a user for "MyNewCluster" database only
 
 ```python
@@ -22,6 +23,7 @@ newClusterAdminPass = 'myNewClusterAdminPass'
 !atlas dbusers create <CODE_BLOCK>
 ```
 
+:::tip
 <details>
     <summary> Answer </summary>
     ```python
@@ -32,6 +34,7 @@ newClusterAdminPass = 'myNewClusterAdminPass'
     !atlas dbusers create --username {newClusterAdminUser} --password {newClusterAdminPass} --role readWriteAnyDatabase --scope 'MyNewCluster' --projectId {project_id} 
 ```
 </details>
+:::
 
 ### 2. Create user with read-only access to the 'salesDB' database
 
@@ -45,6 +48,7 @@ salesReadPass = 'salesReadPass'
 !atlas dbusers create <CODE_BLOCK>
 ```
 
+:::tip
 <details>
     <summary> Answer </summary>
     ```python
@@ -57,6 +61,7 @@ salesReadPass = 'salesReadPass'
     !atlas dbusers create --username salesReadUser --password salesReadPass --role salesRead --projectId {project_id}
     ```
 </details>
+:::
 
 ### 3. Test that 'salesReadUser' cannot insert data into the 'salesDB' database.
 

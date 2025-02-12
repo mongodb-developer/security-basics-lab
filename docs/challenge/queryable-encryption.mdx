@@ -2,15 +2,15 @@
 sidebar_position: 2
 ---
 
-# RUN : Queryable Encryption challenge
+# 👐 RUN : Queryable Encryption challenge
 
-:::info
-The provided scripts are incomplete. Replace all `<CODE_BLOCK>` with the correct code to complete the lab.
+:::tip
+ Remember to add the `--projectId {project_id}`
 :::
 
-> Hint: Remember to add `--projectId {project_id}`
-
-> Refer to documentations: [CSFLE](https://www.mongodb.com/docs/manual/core/queryable-encryption/)
+:::info
+> Docs :  [CSFLE](https://www.mongodb.com/docs/atlas/app-services/data-api/csfle/)
+:::
 
 ### 1. Install the necessary packages.
 
@@ -93,6 +93,7 @@ key_vault_database_name = "encryption"
 key_vault_collection_name = "__keyVault"
 key_vault_namespace = f"{key_vault_database_name}.{key_vault_collection_name}"
 
+
 auto_encryption_options = AutoEncryptionOpts(
     kms_providers,
     key_vault_namespace,
@@ -112,6 +113,7 @@ client_encryption = ClientEncryption(
 )
 ```
 
+
 ### 5. Consider the following sample 'patient' document:
 ```python
 patient_document = {
@@ -130,6 +132,7 @@ patient_document = {
 ### 6. Create an encrypted collection based on the following requirements:
 - 'patientId' and 'billing' must be encrypted
 - patients will be queried by 'patientId'
+
 
 ```python
 # Create encrypted fields map
@@ -186,6 +189,7 @@ result = <CODE_BLOCK>
 print(f"Inserted document ID: {result.inserted_id}")
 ```
 
+:::tip
 <details>
     <summary> Answer </summary>
     ```python
@@ -194,6 +198,7 @@ print(f"Inserted document ID: {result.inserted_id}")
     print(f"Inserted document ID: {result.inserted_id}")
     ```
 </details>
+:::
 
 ### 6. Find the patient by its 'ssn':
 
@@ -202,8 +207,10 @@ find_result = <CODE_BLOCK>
 print(find_result)
 ```
 
+
 You should be able to successfully retrieve the patient.
 
+:::tip
 <details>
     <summary> Answer </summary>
     ```python
@@ -213,6 +220,7 @@ You should be able to successfully retrieve the patient.
     print(find_result)
     ```
 </details>
+:::
 
 ### 7. Make the same query the collection without encryption/decryption.
 
@@ -224,6 +232,7 @@ print(find_result)
 ```
 You should not be able to find a record since the 'ssn' in the document is encrypted.
 
+:::tip
 <details>
     <summary> Answer </summary>
     ```python
@@ -235,6 +244,7 @@ You should not be able to find a record since the 'ssn' in the document is encry
     print(find_result)
     ```
 </details>
+:::
 
 ### 8. Read all documents in the collection without encryption/decryption.
 ```python
@@ -243,6 +253,7 @@ print("\nAll documents in the collection:")
 for doc in all_docs:
     print(doc)
 ```
+
 You will be able to retrieve the documents, but encrypted data stays encrypted.
 
 
