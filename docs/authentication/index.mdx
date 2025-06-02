@@ -14,6 +14,12 @@ Authentication is a crucial security feature that verifies the identity of clien
 <Tabs groupId="deployment">
 <TabItem value="atlas" label="MongoDB Atlas">
 
+:::info[Atlas User Types]
+In MongoDB Atlas, there are two main types of users:
+- **Atlas Control Plane Users**: These users manage the Atlas infrastructure, projects, and services (e.g., creating clusters, configuring network access, managing billing). They interact with the Atlas UI, API, or CLI.
+- **Atlas Data Plane Users**: These users are created within an Atlas project and are used by applications and clients to connect to and authenticate against the actual MongoDB databases hosted on Atlas. They have specific database roles and privileges.
+:::
+
 MongoDB Atlas supports multiple authentication mechanisms:
 
 - **SCRAM (Default)**: The default and simplest mechanism for MongoDB, providing secure authentication using salted challenge-response methods. (For production deployment we recommend using a more advanced authentication mechanism)
@@ -94,6 +100,10 @@ mongosh "mongodb+srv://<atlas-host-name>/test?authSource=%24external&authMechani
 
 </TabItem>
 <TabItem value="onprem" label="On-Premises">
+
+:::info[On-Premises User Management]
+In on-premises MongoDB deployments, user management is handled directly on the MongoDB server. Administrators create and manage users and their roles using the mongo shell or drivers, and these users authenticate directly against the database instances.
+:::
 
 On-premises MongoDB deployments support:
 
