@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# 👐 Initial Setup and access for Atlas CLI
+# 👐 Initial Setup and Access for Atlas CLI
 
 **Run this section in your notebook**
 
@@ -17,9 +17,9 @@ sidebar_position: 2
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=mongodb-developer/security-lab-notebooks)
 
-This section will cover the required notebook operations that must be fulfilled to run the Challenges.
+This section will cover the required notebook operations that must be fulfilled to run the challenges.
 
-### 1. Install atlas CLI on the notebook environment.
+### 1. Install Atlas CLI on the notebook environment.
 ```python
 # Install atlas-cli
 
@@ -43,9 +43,9 @@ We are piping a new line character so that it selects a default organization for
 
 :::tip
 
-**Important!** This task requires you to click the connect link https://account.mongodb.com/account/connect and input the 8 digit code prompted. 
+**Important!** This task requires you to click the connect link https://account.mongodb.com/account/connect and input the eight-digit code prompted. 
 
-Once logged in you should see a success mark on that cell.
+Once logged in, you should see a success mark on that cell.
 
 
 <details>
@@ -87,9 +87,9 @@ Take a note of the relevant Organization ID for next steps and "STOP" the cell.
 Take a note of the relevant Organization ID for next step.
 
 </details>
+:::
 
-
-### 3. Create a new project called "MySecureProj"
+### 3. Create a new project called "MySecureProj."
 Replace `<ORGANIZATION_ID>` with the Organization ID from the previous step.
 ```
 # Retain the quotes ("") when pasting the Organization ID
@@ -99,7 +99,7 @@ org_id = "<ORGANIZATION_ID>"
 There should be an output which shows the Project ID of the project created. Use this Project ID for the next step.
 
 
-### 4. Create your challenge cluster
+### 4. Create your challenge cluster.
 Replace `<PROJECT_ID>` with the Project ID from the previous step.
 ```python
 # Retain the quotes ("") when pasting the Project ID
@@ -109,6 +109,6 @@ project_id = "<PROJECT_ID>"
 !atlas clusters create MyNewCluster --provider AWS --region US_EAST_1 --tier M0 --projectId {project_id}
 ```
 
-## Next Steps
+## Next steps
 
 Progress to [Network Setup](./atlas) for authorising access to your Atlas deployment.
