@@ -5,39 +5,39 @@ sidebar_position: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# 📘 Role-Based Access Control (RBAC)
+# 📘 Role-based Access Control (RBAC)
 
-Role-Based Access Control (RBAC) in MongoDB provides fine-grained access control for your database. It allows you to grant users specific privileges on databases, collections, and operations.
+Role-based access control (RBAC) in MongoDB provides fine-grained access control for your database. It allows you to grant users specific privileges on databases, collections, and operations.
 
-## Understanding RBAC Components
+## Understanding RBAC components
 
 ### Roles
 
 A role consists of:
-- Privileges (actions allowed on resources)
-- Roles (other roles from which this role inherits privileges)
+- Privileges (actions allowed on resources).
+- Roles (other roles from which this role inherits privileges).
 
 <Tabs>
 <TabItem value="atlas" label="MongoDB Atlas">
 
-### Built-in Roles in Atlas
+### Built-in roles in Atlas
 
-1. **Organization Roles (examples)**
+1. **Organization roles (examples)**
    - `Organization Owner`
    - `Organization Member`
    - `Organization Read Only`
 
-For all roles see this [Documentation](https://www.mongodb.com/docs/atlas/reference/user-roles/#std-label-user-roles).
+For all roles, see the [documentation](https://www.mongodb.com/docs/atlas/reference/user-roles/#std-label-user-roles).
 
-2. **Project Roles (examples)**
+2. **Project roles (examples)**
    - `Project Owner`
    - `Project Data Access Admin`
    - `Project Data Access Read/Write`
    - `Project Read Only`
 
-For more project level roles see this [Documentation](https://www.mongodb.com/docs/atlas/reference/user-roles/#project-roles).
+For more project-level roles, see the [documentation](https://www.mongodb.com/docs/atlas/reference/user-roles/#project-roles).
 
-### Managing Roles in Atlas
+### Managing roles in Atlas
 
 ```shell
 ## Using Atlas CLI to create a user with specific roles
@@ -53,7 +53,7 @@ atlas dbusers update dataAdmin \
   --projectId your-project-id
 ```
 
-### Custom Roles Example
+### Custom roles example
 
 ```
 ## Create a custom role for sales data access
@@ -66,24 +66,24 @@ atlas dbusers create --username readOnlyUser --password readOnlyPass --role <rol
 </TabItem>
 <TabItem value="onprem" label="On-Premises">
 
-### Built-in Roles in MongoDB
+### Built-in roles in MongoDB
 
-1. **Database User Roles**
+1. **Database user roles**
    - `read`
    - `readWrite`
 
-2. **Database Administration Roles**
+2. **Database administration roles**
    - `dbAdmin`
    - `dbOwner`
    - `userAdmin`
 
-3. **Cluster Administration Roles**
+3. **Cluster administration roles**
    - `clusterAdmin`
    - `clusterManager`
    - `clusterMonitor`
    - `hostManager`
 
-### Managing Roles
+### Managing roles
 
 ```javascript
 // Create an admin user
@@ -113,17 +113,17 @@ db.createRole({
 </TabItem>
 </Tabs>
 
-## Role Management Best Practices
+## Role management best practices
 
 <Tabs>
 <TabItem value="atlas" label="MongoDB Atlas">
 
-1. **Project-Level Access Control**
-   - Use Project roles for team-based access
+1. **Project-level access control**
+   - Use project roles for team-based access
    - Implement separate projects for development/production
    - Regular audit of project members
 
-2. **API Access**
+2. **API access**
    - Use programmatic API keys with appropriate roles
    - Rotate API keys regularly
    - Monitor API key usage
@@ -139,12 +139,12 @@ atlas organizations apiKeys create \
 </TabItem>
 <TabItem value="onprem" label="On-Premises">
 
-1. **Role Hierarchy**
+1. **Role hierarchy**
    - Design role hierarchy based on job functions
    - Use role inheritance to maintain consistency
    - Document role relationships
 
-2. **Monitoring and Auditing**
+2. **Monitoring and auditing**
    - Enable audit logging for role changes
    - Regular review of role assignments
    - Document all role modifications
@@ -160,12 +160,12 @@ db.setParameter({
 </TabItem>
 </Tabs>
 
-## Practical Examples
+## Practical examples
 
 <Tabs>
 <TabItem value="atlas" label="MongoDB Atlas">
 
-### Application-Specific Roles
+### Application-specific roles
 
 ```javascript
 // Create read-only analytics role
@@ -188,7 +188,7 @@ Database user 'analyst' successfully created.
 </TabItem>
 <TabItem value="onprem" label="On-Premises">
 
-### Application-Specific Roles
+### Application-specific roles
 
 ```javascript
 // Create a custom role for order processing
@@ -218,6 +218,6 @@ db.createUser({
 </TabItem>
 </Tabs>
 
-## Next Steps
+## Next steps
 
-After understanding RBAC, lets do a [challenge](./challenge/rbac) to test our knowledge.
+After understanding RBAC, let's do a [challenge](./challenge/rbac) to test our knowledge.
