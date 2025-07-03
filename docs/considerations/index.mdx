@@ -7,28 +7,25 @@ import TabItem from '@theme/TabItem';
 
 # Security Considerations
 
-## Introduction
-
 This comprehensive guide explores advanced security measures for MongoDB deployments, following a defense-in-depth approach. We'll progress from fundamental security concepts to advanced implementations, ensuring a thorough understanding of MongoDB security.
 
-### Learning Path
+## Learning path
 1. **Foundation**: Understanding basic security principles
 2. **Implementation**: Hands-on configuration and setup
-3. **Advanced Features**: Exploring sophisticated security measures
+3. **Advanced features**: Exploring sophisticated security measures
 4. **Compliance**: Meeting industry standards
 5. **Maintenance**: Ongoing security management
 
+## Security foundation
 
-## Security Foundation
+### Key security concepts
+1. Authentication and authorization
+2. Encryption (At-rest/data at-rest and in-transit)
+3. Audit logging
+4. Network security
+5. Backup and recovery
 
-### Key Security Concepts
-1. Authentication and Authorization
-2. Encryption (At-rest/Data at-rest and In-transit)
-3. Audit Logging
-4. Network Security
-5. Backup and Recovery
-
-### Security Architecture Overview
+### Security architecture overview
 ```mermaid
 graph TD
     A[Client Application] 
@@ -38,29 +35,29 @@ graph TD
     C -->|Backup| F[Secure Backup]
 ```
 
-## Security Implementation Roadmap
+## Security implementation roadmap
 
-1. **Phase 1: Basic Security Setup**
+1. **Phase 1: Basic security setup**
    - Authentication setup
    - Network security
    - Basic encryption
 
-2. **Phase 2: Advanced Security Features**
+2. **Phase 2: Advanced security features**
    - Auditing
    - Monitoring
    - Advanced encryption
 
-3. **Phase 3: Compliance and Maintenance**
+3. **Phase 3: Compliance and maintenance**
    - Regular audits
    - Compliance checking
    - Security updates
 
-## Auditing and Monitoring
+## Auditing and monitoring
 
 <Tabs>
 <TabItem value="atlas" label="MongoDB Atlas">
 
-### Enable Database Auditing
+### Enable database auditing
 
 ```javascript
 // View audit logs using Atlas CLI
@@ -75,9 +72,9 @@ atlas alerts settings modify \
 ```
 **Importance:** Database auditing provides a record of all database activities, which is crucial for identifying security breaches and ensuring compliance.
 
-### Monitoring Configuration
+### Monitoring configuration
 
-1. Set up Database Alerts
+1. Set up database alerts
 ```javascript
 atlas alerts create \
   --eventTypeName OUTSIDE_METRIC_THRESHOLD \
@@ -86,7 +83,7 @@ atlas alerts create \
 ```
 **Importance:** Setting up alerts allows you to be notified of critical events, such as high connection counts, enabling you to respond quickly to potential issues.
 
-2. Configure Monitoring Integrations
+2. Configure monitoring integrations
 ```javascript
 atlas integrations create DATADOG \
   --apiKey your-datadog-api-key \
@@ -97,7 +94,7 @@ atlas integrations create DATADOG \
 </TabItem>
 <TabItem value="onprem" label="On-Premises">
 
-### Enable Audit Logging
+### Enable audit logging
 
 Configure mongod.conf:
 ```yaml
@@ -113,7 +110,7 @@ tail -f /var/log/mongodb/audit.json | jq '.'
 ```
 **Importance:** Audit logging provides a record of all database activities, which is crucial for identifying security breaches and ensuring compliance.
 
-### Monitoring Setup
+### Monitoring setup
 
 1. Configure MongoDB Ops Manager:
 ```javascript
@@ -133,12 +130,12 @@ net:
 </TabItem>
 </Tabs>
 
-## Backup and Recovery
+## Backup and recovery
 
 <Tabs>
 <TabItem value="atlas" label="MongoDB Atlas">
 
-### Continuous Backup
+### Continuous backup
 
 Configure backup policy:
 ```javascript
@@ -150,9 +147,9 @@ atlas clusters update backup \
 ```
 **Importance:** Continuous backups ensure that you can recover your data to any point in time, minimizing data loss in case of a failure.
 
-### Point-in-Time Recovery
+### Point-in-time recovery
 
-Restore to specific point:
+Restore to a specific point:
 ```javascript
 atlas clusters restore \
   --projectId your-project-id \
@@ -164,7 +161,7 @@ atlas clusters restore \
 </TabItem>
 <TabItem value="onprem" label="On-Premises">
 
-### Backup Configuration
+### Backup configuration
 
 Set up mongodump backup script:
 ```bash
@@ -176,7 +173,7 @@ mongodump \
 ```
 **Importance:** Regular backups ensure that you can recover your data in case of a system failure or data loss.
 
-### Restore Process
+### Restore process
 
 Restore from backup:
 ```bash
@@ -190,12 +187,12 @@ mongorestore \
 </TabItem>
 </Tabs>
 
-## On-Premise Security Architecture
+## On-premise security architecture
 
 <Tabs>
 <TabItem value="development" label="Development">
 
-### Development Environment Setup
+### Development environment setup
 
 ```yaml
 # mongod.conf for development
@@ -209,7 +206,7 @@ net:
     certificateKeyFile: /path/to/mongodb-dev.pem
 ```
 
-### Local Testing Configuration
+### Local testing configuration
 
 ```javascript
 // Create development admin user
@@ -227,7 +224,7 @@ db.createUser({
 </TabItem>
 <TabItem value="production" label="Production">
 
-### Production Environment Setup
+### Production environment setup
 
 ```yaml
 # mongod.conf for production
@@ -244,7 +241,7 @@ net:
     clusterFile: /path/to/cluster-cert.pem
 ```
 
-### Production Hardening
+### Production hardening
 
 ```javascript
 // Create restricted admin user
@@ -262,12 +259,12 @@ db.createUser({
 </TabItem>
 </Tabs>
 
-## Advanced Security Features
+## Advanced security features
 
 <Tabs>
 <TabItem value="encryption" label="Encryption">
 
-### Enterprise Encryption
+### Enterprise encryption
 
 Configure enterprise encryption:
 ```yaml
@@ -281,7 +278,7 @@ security:
     clientCertificateFile: /path/to/kmip.pem
 ```
 
-### Encryption Key Rotation
+### Encryption key rotation
 
 ```javascript
 // Rotate database key
@@ -298,7 +295,7 @@ db.adminCommand({
 </TabItem>
 <TabItem value="auditing" label="Auditing">
 
-### Advanced Audit Configuration
+### Advanced audit configuration
 
 ```yaml
 auditLog:
@@ -318,7 +315,7 @@ auditLog:
   }'
 ```
 
-### Audit Analysis Tools
+### Audit analysis tools
 
 ```bash
 # Parse audit logs for authentication failures
@@ -331,13 +328,12 @@ tail -f /var/log/mongodb/audit.json | jq 'select(.atype=="createUser")'
 </TabItem>
 </Tabs>
 
-
-## Security Compliance
+## Security compliance
 
 <Tabs>
 <TabItem value="pci" label="PCI DSS">
 
-### PCI DSS Requirements
+### PCI DSS requirements
 
 1. Install and maintain a firewall configuration
 ```bash
@@ -361,7 +357,7 @@ net:
 </TabItem>
 <TabItem value="gdpr" label="GDPR">
 
-### GDPR Compliance
+### GDPR compliance
 
 1. Data encryption configuration
 ```javascript
@@ -394,36 +390,36 @@ db.userEvents.createIndex(
 </TabItem>
 </Tabs>
 
-## Best Practices Summary
+## Best practices summary
 
-1. **System Configuration**
+1. **System configuration**
    - [ ] Enable authentication and authorization
    - [ ] Configure TLS/SSL encryption
    - [ ] Set up IP binding restrictions
    - [ ] Implement RBAC
 
-2. **Monitoring and Auditing**
+2. **Monitoring and auditing**
    - [ ] Configure audit logging
    - [ ] Set up monitoring tools
    - [ ] Implement log rotation
    - [ ] Enable performance monitoring
 
-3. **Backup and Recovery**
+3. **Backup and recovery**
    - [ ] Implement automated backups
    - [ ] Test recovery procedures
    - [ ] Secure backup storage
    - [ ] Document recovery processes
 
-4. **Compliance and Documentation**
+4. **Compliance and documentation**
    - [ ] Maintain security documentation
    - [ ] Regular security audits
    - [ ] Compliance validation
    - [ ] Staff training
 
-## Next Steps
+## Next steps
 
 After implementing these advanced security measures:
-1. Regularly test security configurations
-2. Conduct security audits
-3. Update documentation
-4. Train team members on security procedures
+1. Regularly test security configurations.
+2. Conduct security audits.
+3. Update documentation.
+4. Train team members on security procedures.
