@@ -2,11 +2,15 @@
 
 This is a template to __create new Lab documentation sites__. Contains info on how to use Docusaurus and is a good starting point. This workshop provides a hands-on experience with MongoDB security features, including network security, authentication, role-based access control (RBAC), and queryable encryption.
 
-### Installation
+### Local installation
 
+1. Clone this repo
+2. Install packages
 ```
-npx create-docusaurus@latest name-of-my-new-awesome-workshop https://github.com/mongodb-developer/docusaurus-workshop
-cd name-of-my-new-awesome-workshop
+npm i
+```
+3. Launch Lab
+```
 npm start
 ```
 
