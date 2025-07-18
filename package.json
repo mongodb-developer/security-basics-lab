@@ -1,6 +1,6 @@
 {
-  "name": "docusaurus-template-lab",
-  "version": "0.0.0",
+  "name": "security-basics-lab",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",

@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# 👐 RUN : Queryable Encryption challenge
+# 👐 RUN: Queryable Encryption challenge
 
 :::tip
  Remember to add the `--projectId {project_id}`
@@ -114,7 +114,7 @@ client_encryption = ClientEncryption(
 ```
 
 
-### 5. Consider the following sample 'patient' document:
+### 5. Consider the following sample "patient" document.
 ```python
 patient_document = {
     "patientName": "Jon Doe",
@@ -129,7 +129,7 @@ patient_document = {
 }
 ```
 
-### 6. Create an encrypted collection based on the following requirements:
+### 6. Create an encrypted collection based on the following requirements.
 - 'patientId' and 'billing' must be encrypted
 - patients will be queried by 'patientId'
 
@@ -181,7 +181,7 @@ client_encryption.create_encrypted_collection(
     ```
 </details>
 
-### 5. Insert the sample 'patient' document.
+### 7. Insert the sample "patient" document.
 
 ```python
 encrypted_collection = encrypted_client[encrypted_database_name][encrypted_collection_name]
@@ -200,13 +200,12 @@ print(f"Inserted document ID: {result.inserted_id}")
 </details>
 :::
 
-### 6. Find the patient by its 'ssn':
+### 8. Find the patient by its "ssn."
 
 ```python
 find_result = <CODE_BLOCK>
 print(find_result)
 ```
-
 
 You should be able to successfully retrieve the patient.
 
@@ -222,7 +221,7 @@ You should be able to successfully retrieve the patient.
 </details>
 :::
 
-### 7. Make the same query the collection without encryption/decryption.
+### 9. Make the same query the collection without encryption/decryption.
 
 ```python
 reg_mongoclient = MongoClient(new_connection)
@@ -230,7 +229,7 @@ reg_collection = reg_mongoclient[encrypted_database_name][encrypted_collection_n
 find_result = <CODE_BLOCK>
 print(find_result)
 ```
-You should not be able to find a record since the 'ssn' in the document is encrypted.
+You should not be able to find a record since the "ssn" in the document is encrypted.
 
 :::tip
 <details>
@@ -246,7 +245,7 @@ You should not be able to find a record since the 'ssn' in the document is encry
 </details>
 :::
 
-### 8. Read all documents in the collection without encryption/decryption.
+### 10. Read all documents in the collection without encryption/decryption.
 ```python
 all_docs = reg_mongoclient[encrypted_database_name][encrypted_collection_name].find()
 print("\nAll documents in the collection:")
@@ -256,7 +255,6 @@ for doc in all_docs:
 
 You will be able to retrieve the documents, but encrypted data stays encrypted.
 
-
-## Next Steps
+## Next steps
 
 Start the chapter on [On-Premises](./onprem) for self-managed deployments.
