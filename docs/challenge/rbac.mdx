@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# 👐 RUN : RBAC challenge
+# 👐 RUN : RBAC Challenge
 :::tip
 
 :::info
@@ -11,9 +11,9 @@ The provided scripts are incomplete. Replace all `<CODE_BLOCK>` with the correct
 
 :::tip
  Hint: Remember to add `--projectId {project_id}`
- Refer to documentations : [atlas dbusers](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-dbusers-create/) , [atlas customDbRoles](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-customDbRoles-create/)
+ Refer to the documentation: [atlas dbusers](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-dbusers-create/) , [atlas customDbRoles](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-customDbRoles-create/)
 :::
-### 1. Create a user for "MyNewCluster" database only
+### 1. Create a user for "MyNewCluster" database only.
 
 ```python
 # Create a user:'myNewClusterAdmin', password:'myNewClusterAdminPass', role: 'readWriteAnyDatabase'
@@ -36,7 +36,7 @@ newClusterAdminPass = 'myNewClusterAdminPass'
 </details>
 :::
 
-### 2. Create user with read-only access to the 'salesDB' database
+### 2. Create a user with read-only access to the "salesDB" database.
 
 ```python
 #Create a role "salesRead" which access to read-only role to salesDB database
@@ -63,7 +63,7 @@ salesReadPass = 'salesReadPass'
 </details>
 :::
 
-### 3. Test that 'salesReadUser' cannot insert data into the 'salesDB' database.
+### 3. Test that "salesReadUser" cannot insert data into the "salesDB" database.
 
 ```python
 # Get connection string
@@ -84,7 +84,7 @@ except Exception as e:
   print(f"Error inserting data: {e}")
 ```
 
-### 4. Test that 'myNewClusterAdmin' can insert data into the 'salesDB' database.
+### 4. Test that "myNewClusterAdmin" can insert data into the "salesDB" database.
 
 ```python
 # Get connection string
@@ -105,6 +105,6 @@ except Exception as e:
   print(f"Error inserting data: {e}")
 ```
 
-## Next Steps
+## Next steps
 
-Start the chapter on [Queryable Encryption](./queryable-encryption) for data encryption.
+Start the chapter on [queryable encryption](./queryable-encryption) for data encryption.
