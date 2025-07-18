@@ -3,7 +3,7 @@ sidebar_position: 2
 ---
 
 
-# 👐 RUN : Authentication challenge 
+# 👐 RUN: Authentication Challenge 
 
 :::info
 The provided scripts are incomplete. Replace all `<CODE_BLOCK>` with the correct code to complete the lab.
@@ -20,7 +20,7 @@ username = "myUser"
 password = "mySecurePassword"
 !atlas dbusers create <CODE_BLOCK>
 ```
-> Refer to documentations: [atlas dbusers](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-dbusers-create/)
+> Refer to documentation: [atlas dbusers](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-dbusers-create/)
 
 :::tip
 <details>
@@ -34,7 +34,7 @@ password = "mySecurePassword"
 </details>
 :::
 
-### 2. Lets test our SCRAM user successful creation by performing the authentication process
+### 2. Let's test our SCRAM user successful creation by performing the authentication process
 
 ```python
 !pip install pymongo dnspython  
@@ -60,12 +60,12 @@ client.list_database_names()
 # create a Atlas-managed X509 user with username: "myX509User" and role: "readAnyDatabase" 
 !atlas dbusers create <CODE_BLOCK>
 ```
-> Refer to documentations: [atlas dbusers](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-dbusers-create/)
+> Refer to documentation: [atlas dbusers](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-dbusers-create/)
 ```python
 # Generate a certification for "myX509user", set monthsUntilExpiration to 1, and save it to /tmp/cert.pem
 !atlas dbusers certs create <CODE_BLOCK> > /tmp/cert.pem
 ```
-> Refer to documentations: [atlas dbusers certs](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-dbusers-certs-create/)
+> Refer to documentation: [atlas dbusers certs](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-dbusers-certs-create/)
 
 :::tip
 <details>
@@ -81,7 +81,7 @@ client.list_database_names()
 </details>
 :::
 
-### 4. Let's test our X509 User
+### 4. Let's test our X509 user
 
 ```python
 # Get connection string
@@ -99,6 +99,6 @@ client = MongoClient(new_connection,
 # Access the database
 client.list_database_names()
 ```
-## Next Steps
+## Next steps
 
-Start the chapter on [RBAC](./rbac) for Role Based Access user management.
+Start the chapter on [RBAC](./rbac) for role-based access user management.
