@@ -3,13 +3,13 @@ sidebar_position: 1
 ---
 
 
-# 👐 RUN : Network challenge 
+# 👐 RUN : Network Challenge 
 
 :::info
 The provided scripts are incomplete. Replace all `<CODE_BLOCK>` with the correct code to complete the lab.
 :::
 
-### 1. Add 'My current IP' temporary into the atlas project
+### 1. Add "My current IP" temporary into the atlas project
 
 ```python
 from datetime import datetime, timedelta
@@ -37,11 +37,11 @@ delete_after = (datetime.utcnow() + timedelta(hours=24)).isoformat() + 'Z'
 
 :::
 
-### 2. Check that 'My current IP' was added:
+### 2. Check that "My current IP" was added
 ```python
 !atlas accessLists list --output json --projectId {project_id}
 ```
 
-## Next Steps
+## Next steps
 
-Start the chapter on [Authentication](./authentication) for database user management.
+Start the chapter on [authentication](./authentication) for database user management.
