@@ -4,6 +4,21 @@
 
 A MongoDB Security Basics Labs. Access it [here](https://mongodb-developer.github.io/security-basics-lab/)
 
+## Workshop Logic
+
+This workshop guides you through the following security concepts:
+
+1.  **Initial Setup and Network Security**: Learn how to set up your environment and configure network access to your MongoDB Atlas cluster.
+2.  **Authentication**: Explore different authentication methods, including username/password and X.509 certificate authentication.
+3.  **Role-Based Access Control (RBAC)**: Implement fine-grained access control using RBAC to manage user permissions.
+4.  **Queryable Encryption**: Discover how to encrypt data at rest and in transit while still being able to query it.
+
+Each section includes a challenge where you can apply what you've learned. Follow the instructions in each challenge to complete the tasks.
+
+## Contributing
+
+As `main` is protected, submit a pull request to be reviewed.
+
 ### Local installation
 
 1. Clone this repo
@@ -42,24 +57,10 @@ This command generates static content into the `build` directory and can be serv
 
 Use the provided Github Action, or deploy manually after building
 
-## Contributing
-
-As `main` is protected, submit a pull request to be reviewed.
-
-## Workshop Logic
-
-This workshop guides you through the following security concepts:
-
-1.  **Initial Setup and Network Security**: Learn how to set up your environment and configure network access to your MongoDB Atlas cluster.
-2.  **Authentication**: Explore different authentication methods, including username/password and X.509 certificate authentication.
-3.  **Role-Based Access Control (RBAC)**: Implement fine-grained access control using RBAC to manage user permissions.
-4.  **Queryable Encryption**: Discover how to encrypt data at rest and in transit while still being able to query it.
-
-Each section includes a challenge where you can apply what you've learned. Follow the instructions in each challenge to complete the tasks.
 
 ## Docusaurus
 
-This website is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator. It's available on https://mongodb-developer.github.io/docusaurus-workshop/.
+This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator. Instructions are available on https://mongodb-developer.github.io/docusaurus-workshop/.
 
 ### Disclaimer
 
