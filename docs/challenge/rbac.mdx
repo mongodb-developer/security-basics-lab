@@ -3,7 +3,6 @@ sidebar_position: 2
 ---
 
 # 👐 RUN : RBAC Challenge
-:::tip
 
 :::info
 The provided scripts are incomplete. Replace all `<CODE_BLOCK>` with the correct code to complete the lab.
@@ -13,7 +12,13 @@ The provided scripts are incomplete. Replace all `<CODE_BLOCK>` with the correct
  Hint: Remember to add `--projectId {project_id}`
  Refer to the documentation: [atlas dbusers](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-dbusers-create/) , [atlas customDbRoles](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-customDbRoles-create/)
 :::
-### 1. Create a user for "MyNewCluster" database only.
+### 1. Create a user for "MyNewCluster" database with role-based access.
+
+Create a new user with the built-in role `readWriteAnyDatabase` and the username and password below.
+
+The user access should be scoped to the `myNewCluster` cluster. Use the `--scope` option.
+
+Refer to the documentation: https://www.mongodb.com/docs/atlas/cli/current/command/atlas-dbusers-create/.
 
 ```python
 # Create a user:'myNewClusterAdmin', password:'myNewClusterAdminPass', role: 'readWriteAnyDatabase'
@@ -38,11 +43,30 @@ newClusterAdminPass = 'myNewClusterAdminPass'
 
 ### 2. Create a user with read-only access to the "salesDB" database.
 
+Create a custom role named `salesRead` with read-only access to the `salesDB` database.
+
+Refer to the documentation: [atlas customDbRoles](https://www.mongodb.com/docs/atlas/cli/current/command/atlas-customDbRoles-create).
+
 ```python
 #Create a role "salesRead" which access to read-only role to salesDB database
 !atlas customDbRoles create <CODE_BLOCK>
+```
 
-#Create a user "salesReadUser" with password "salesReadPass" which has the "salesRead" role
+:::tip
+<details>
+    <summary> Answer </summary>
+    ```python
+    #Create a role "salesRead" which access to read-only role to salesDB database
+    !atlas customDbRoles create salesRead --inheritedRole read@salesDB --projectId {project_id}
+    ```
+</details>
+:::
+
+
+Now, we will create a user `salesReadUser` with password `salesReadPass` which has the `salesRead` role.
+
+
+```python
 salesReadUser = 'salesReadUser'
 salesReadPass = 'salesReadPass'
 !atlas dbusers create <CODE_BLOCK>
@@ -52,9 +76,6 @@ salesReadPass = 'salesReadPass'
 <details>
     <summary> Answer </summary>
     ```python
-    #Create a role "salesRead" which access to read-only role to salesDB database
-    !atlas customDbRoles create salesRead --inheritedRole read@salesDB --projectId {project_id}
-
     #Create a user "salesReadUser" with password "salesReadPass" which has the "salesRead" role
     salesReadUser = 'salesReadUser'
     salesReadPass = 'salesReadPass'
@@ -64,6 +85,8 @@ salesReadPass = 'salesReadPass'
 :::
 
 ### 3. Test that "salesReadUser" cannot insert data into the "salesDB" database.
+
+We will test that indeed `salesReadUser` can't write to the database.
 
 ```python
 # Get connection string
