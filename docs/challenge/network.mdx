@@ -34,7 +34,7 @@ from zoneinfo import ZoneInfo
 # Calculate the date and time 24 hours from now
 delete_after = (datetime.now(ZoneInfo('UTC')) + timedelta(hours=24)).isoformat()
 
-!atlas accessLists <CODE_BLOCK> --projectId {project_id} --deleteAfter {delete_after}
+!atlas accessLists create --currentIp --projectId {project_id} --deleteAfter {delete_after}
 ```
 </details>
 
