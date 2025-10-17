@@ -75,7 +75,12 @@ const sidebars = {
     {
       type: 'doc',
       id: 'considerations/index',
-      label: 'Security Considerations and Summary',
+      label: 'Security Considerations',
+    },
+    {
+      type: 'doc',
+      id: 'summary',
+      label: 'Summary',
     }
   ],
 };
