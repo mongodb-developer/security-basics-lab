@@ -2,7 +2,7 @@ name: PR Preview
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [ Agent_Assistant ]
 
 jobs:
   build-and-deploy:
